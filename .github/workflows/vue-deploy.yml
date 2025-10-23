@@ -11,9 +11,9 @@ jobs:
   aws-deploy:
     runs-on: ubuntu-latest
     env:
-      VITE_APP_CLIENT_ID: ${{secrets.VITE_APP_CLIENT_ID}}
-      VITE_APP_API_URL: ${{secrets.VITE_APP_API_URL}}
-      VITE_APP_CLIENT_URL: ${{secrets.VITE_APP_CLIENT_URL}}
+      CLIENT_ID: ${{secrets.CLIENT_ID}}
+      API_URL: ${{secrets.API_URL}}
+      CLIENT_URL: ${{secrets.CLIENT_URL}}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,10 +23,10 @@ jobs:
           node-version: 18
       - run: |
           touch .env
-          echo VITE_APP_CLIENT_ID="$VITE_APP_CLIENT_ID" >> .env
-          echo VITE_APP_API_URL="$VITE_APP_API_URL" >> .env
-          echo VITE_APP_CLIENT_URL=tutorial.eaglesoftwareteam.com >> .env
-          echo VITE_APP_SITE_URL=tutorial.eaglesoftwareteam.com >> .env
+          echo CLIENT_ID="$CLIENT_ID" >> .env
+          echo API_URL="$API_URL" >> .env
+          echo CLIENT_URL=project3.eaglesoftwareteam.com >> .env
+          echo SITE_URL=project3.eaglesoftwareteam.com >> .env
 
       - run: npm install
       - run: npm run build
@@ -38,6 +38,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
           SOURCE: "dist/"
-          REMOTE_HOST: "tutorial.eaglesoftwareteam.com"
+          REMOTE_HOST: "project3.eaglesoftwareteam.com"
           REMOTE_USER: ubuntu
-          TARGET: "/var/www/html/tutorial-frontend-vue3"
+          TARGET: "/var/www/html/seiv2025/p3/t9"
+
