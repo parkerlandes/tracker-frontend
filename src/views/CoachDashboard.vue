@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <CoachNav :nav-items="navItems" />
+      <CoachNav />
   
       <v-container fluid class="pa-8 mt-12">
         <v-row>
@@ -31,12 +31,7 @@
     data() {
       return {
         coachName: "Coach Taylor",
-        navItems: [
-          { title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
-          { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
-          { title: "Exercise Plans", icon: "mdi-calendar-edit", route: "/plans/add" },
-          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
-        ],
+        // removed navItems; CoachNav owns them now
         cards: [
           { title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
           { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
@@ -60,5 +55,6 @@
     transition: 0.2s ease-in-out;
   }
   </style>
+  
   
   
