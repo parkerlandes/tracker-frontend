@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <AthleteNav :nav-items="navItems" />
+      <AthleteNav />
   
       <v-container fluid class="pa-8 mt-12">
         <h1>Welcome, {{ athleteName }}</h1>
@@ -29,16 +29,11 @@
     data() {
       return {
         athleteName: "Jordan Smith",
-        navItems: [
-          { title: "My Profile", icon: "mdi-account-circle", route: "/profile" },
-          { title: "My Goals", icon: "mdi-target", route: "/goals" },
-          { title: "Record Exercise", icon: "mdi-pencil", route: "/exercises/add" },
-          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
-        ],
         cards: [
-          { title: "Record Workout", icon: "mdi-pencil", route: "/exercises/add" },
-          { title: "View Goals", icon: "mdi-target", route: "/goals" },
-          { title: "Progress Charts", icon: "mdi-chart-line", route: "/progress" },
+          { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
+          { title: "Record Exercise", icon: "mdi-pencil", route: "/exercises/add" },
+          { title: "Goals", icon: "mdi-target", route: "/goals" },
+          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
       };
     },
@@ -50,12 +45,5 @@
   };
   </script>
   
-  <style scoped>
-  .hoverable:hover {
-    cursor: pointer;
-    transform: scale(1.03);
-    transition: 0.2s ease-in-out;
-  }
-  </style>
   
   
