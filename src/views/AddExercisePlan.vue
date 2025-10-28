@@ -1,13 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import TutorialServices from "../services/tutorialServices";
-import Utils from "../config/utils.js";
+import LessonServices from "../services/exerciseServices";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const valid = ref(false);
-const user = Utils.getStore("user");
-const tutorial = ref({
+const valid = ref(true);
+const lesson = ref({
   id: null,
   title: "",
   description: "",
@@ -15,18 +13,23 @@ const tutorial = ref({
 });
 const message = ref("Enter data and click save");
 
-const saveTutorial = () => {
+const props = defineProps({
+  tutorialId: {
+    required: true,
+  },
+});
+
+const saveLesson = () => {
   const data = {
-    title: tutorial.value.title,
-    description: tutorial.value.description,
-    published: true,
-    userId: user.userId,
+    title: lesson.value.title,
+    description: lesson.value.description,
+    tutorialId: props.tutorialId,
   };
-  TutorialServices.create(data)
+  LessonServices.createLesson(props.tutorialId, data)
     .then((response) => {
-      tutorial.value.id = response.data.id;
-      console.log("add " + response.data);
-      router.push({ name: "tutorials" });
+      lesson.value.id = response.data.id;
+
+      router.push({ name: "view", params: { id: props.tutorialId } });
     })
     .catch((e) => {
       message.value = e.response.data.message;
@@ -34,34 +37,31 @@ const saveTutorial = () => {
 };
 
 const cancel = () => {
-  router.push({ name: "tutorials" });
+  router.push({ name: "view", params: { id: props.tutorialId } });
 };
-
-onMounted(() => {
-  user.value = Utils.getStore("user");
-});
 </script>
 
 <template>
   <div>
     <v-container>
       <v-toolbar>
-        <v-toolbar-title>Tutorial Add</v-toolbar-title>
+        <v-toolbar-title>Lesson Edit</v-toolbar-title>
       </v-toolbar>
-
       <br />
       <h4>{{ message }}</h4>
       <br />
+      <h4>Tutorial: {{ tutorialId }}</h4>
+      <br />
       <v-form ref="form" v-model="valid" lazy validation>
         <v-text-field
-          v-model="tutorial.title"
+          v-model="lesson.title"
           id="title"
           :counter="50"
           label="Title"
           required
         ></v-text-field>
         <v-text-field
-          v-model="tutorial.description"
+          v-model="lesson.description"
           id="description"
           :counter="50"
           label="Description"
@@ -72,12 +72,12 @@ onMounted(() => {
           :disabled="!valid"
           color="success"
           class="mr-4"
-          @click="saveTutorial"
+          @click="saveLesson"
         >
           Save
         </v-btn>
 
-        <v-btn color="error" class="mr-4" @click="cancel">Cancel</v-btn>
+        <v-btn color="error" class="mr-4" @click="cancel"> Cancel </v-btn>
       </v-form>
     </v-container>
   </div>

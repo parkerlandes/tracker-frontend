@@ -7,7 +7,7 @@ import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
 const user = ref(null);
-const title = ref("Tutorials");
+const title = ref("Tracker");
 const initials = ref("");
 const name = ref("");
 const logoURL = ref("");

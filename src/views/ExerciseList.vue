@@ -1,5 +1,5 @@
 <script setup>
-import TutorialServices from "../services/tutorialServices";
+import TutorialServices from "../services/exerciseServices";
 import Utils from "../config/utils.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
