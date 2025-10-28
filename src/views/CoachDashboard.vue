@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <TopNav :nav-items="navItems" />
+      <CoachNav :nav-items="navItems" />
   
       <v-container fluid class="pa-8 mt-12">
         <v-row>
@@ -23,24 +23,25 @@
   </template>
   
   <script>
-  import TopNav from "../components/TopNav.vue";
+  import CoachNav from "../components/CoachNav.vue";
   
   export default {
     name: "CoachDashboard",
-    components: { TopNav },
+    components: { CoachNav },
     data() {
       return {
         coachName: "Coach Taylor",
         navItems: [
           { title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
           { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
-          { title: "Plans", icon: "mdi-calendar-edit", route: "/plans/add" },
+          { title: "Exercise Plans", icon: "mdi-calendar-edit", route: "/plans/add" },
           { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
         cards: [
-          { title: "Manage Athletes", icon: "mdi-account-group", route: "/athletes" },
-          { title: "Create Plan", icon: "mdi-calendar-edit", route: "/plans/add" },
-          { title: "View Reports", icon: "mdi-chart-line", route: "/progress" },
+          { title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
+          { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
+          { title: "Exercise Plans", icon: "mdi-calendar-edit", route: "/plans/add" },
+          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
       };
     },

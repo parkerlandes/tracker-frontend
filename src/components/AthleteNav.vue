@@ -35,7 +35,7 @@
   import Utils from "../config/utils";
   
   export default {
-    name: "TopNav",
+    name: "AthleteNav",
     props: {
       navItems: {
         type: Array,
@@ -59,4 +59,3 @@
     },
   };
   </script>
-  

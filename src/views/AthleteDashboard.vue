@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <TopNav :nav-items="navItems" />
+      <AthleteNav :nav-items="navItems" />
   
       <v-container fluid class="pa-8 mt-12">
         <h1>Welcome, {{ athleteName }}</h1>
@@ -21,11 +21,11 @@
   </template>
   
   <script>
-  import TopNav from "../components/TopNav.vue";
+  import AthleteNav from "../components/AthleteNav.vue";
   
   export default {
     name: "AthleteDashboard",
-    components: { TopNav },
+    components: { AthleteNav },
     data() {
       return {
         athleteName: "Jordan Smith",
