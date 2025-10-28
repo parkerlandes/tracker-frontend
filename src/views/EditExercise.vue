@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import TutorialServices from "../services/tutorialServices";
+import TutorialServices from "../services/exerciseServices";
 import { useRouter } from "vue-router";
 
 const router = useRouter();

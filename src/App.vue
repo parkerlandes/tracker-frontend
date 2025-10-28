@@ -1,14 +1,23 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import MenuBar from "./components/MenuBar.vue";
-</script>
-
 <template>
   <v-app>
-    <MenuBar :key="$route.fullPath" />
-    <v-main>
-      <router-view />
-    </v-main>
+    <router-view />
   </v-app>
 </template>
+
+<script>
+export default {
+  name: "App",
+};
+</script>
+
+<style>
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(135deg, #1e88e5, #64b5f6);
+  font-family: "Roboto", sans-serif;
+}
+</style>
+

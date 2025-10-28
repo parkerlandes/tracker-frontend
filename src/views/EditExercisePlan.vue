@@ -1,45 +1,45 @@
 <script setup>
-import LessonServices from "../services/lessonServices";
+import ExercisePlanServicesServices from "../services/exercisePlanServices";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const valid = ref(false);
-const lesson = ref({});
+const exercisePlan = ref({});
 const message = ref("Enter data and click save");
 
 const props = defineProps({
-  tutorialId: {
+  exerciseId: {
     required: true,
   },
-  lessonId: {
+  exercisePlanId: {
     required: true,
   },
 });
 
-const retrieveLesson = () => {
-  LessonServices.getLesson(props.tutorialId, props.lessonId)
+const retrieveExercisePlan = () => {
+  ExercisePlanServices.getExercisePlan(props.exerciseId, props.exercisePlanId)
     .then((response) => {
-      lesson.value = response.data;
+      exercisePlan.value = response.data;
     })
     .catch((e) => {
       message.value = e.response.data.message;
     });
 };
 
-const saveLesson = () => {
+const saveExercisePlan = () => {
   var data = {
-    title: lesson.value.title,
-    description: lesson.value.description,
-    tutorialId: lesson.value.tutorialId,
+    title: exercisePlan.value.title,
+    description: exercisePlan.value.description,
+    exerciseId: exercisePlan.value.exerciseId,
   };
-  LessonServices.updateLesson(lesson.value.tutorialId, lesson.value.id, data)
+  ExercisePlanServices.updateExercisePlan(exercisePlan.value.exerciseId, exercisePlan.value.id, data)
     .then((response) => {
-      lesson.value.id = response.data.id;
+      exercisePlan.value.id = response.data.id;
 
       router.push({
         name: "view",
-        params: { id: lesson.value.tutorialId },
+        params: { id: exercisePlan.value.exerciseId },
       });
     })
     .catch((e) => {
@@ -50,12 +50,12 @@ const saveLesson = () => {
 const cancel = () => {
   router.push({
     name: "view",
-    params: { id: lesson.value.tutorialId },
+    params: { id: exercisePlan.value.exerciseId },
   });
 };
 
 onMounted(() => {
-  retrieveLesson();
+  retrieveExercisePlan();
 });
 </script>
 
@@ -63,23 +63,23 @@ onMounted(() => {
   <div>
     <v-container>
       <v-toolbar>
-        <v-toolbar-title>Lesson Edit</v-toolbar-title>
+        <v-toolbar-title>ExercisePlan Edit</v-toolbar-title>
       </v-toolbar>
       <br />
       <h4>{{ message }}</h4>
       <br />
-      <h4>Tutorial: {{ tutorialId }} Lesson: {{ lessonId }}</h4>
+      <h4>Exercise: {{ exerciseId }} ExercisePlan: {{ exercisePlanId }}</h4>
       <br />
       <v-form ref="form" v-model="valid" lazy validation>
         <v-text-field
-          v-model="lesson.title"
+          v-model="exercisePlan.title"
           id="title"
           :counter="50"
           label="Title"
           required
         ></v-text-field>
         <v-text-field
-          v-model="lesson.description"
+          v-model="exercisePlan.description"
           id="description"
           :counter="50"
           label="Description"
@@ -89,7 +89,7 @@ onMounted(() => {
           :disabled="!valid"
           color="success"
           class="mr-4"
-          @click="saveLesson"
+          @click="saveExercisePlan"
         >
           Save
         </v-btn>

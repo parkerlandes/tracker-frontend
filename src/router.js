@@ -1,58 +1,47 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Login from "./views/Login.vue";
 
-import TutorialsList from "./views/TutorialsList.vue";
-import EditTutorial from "./views/EditTutorial.vue";
-import AddTutorial from "./views/AddTutorial.vue";
-import ViewTutorial from "./views/ViewTutorial.vue";
-import AddLesson from "./views/AddLesson.vue";
-import EditLesson from "./views/EditLesson.vue";
+import LoginStart from "./views/LoginStart.vue";
+import SelectRole from "./views/SelectRole.vue";
+import GoogleAuth from "./views/GoogleAuth.vue";
+
+
+// Role-based views
+import CoachDashboard from "./views/CoachDashboard.vue";
+import AthleteDashboard from "./views/AthleteDashboard.vue";
+//import AdminDashboard from "./views/AdminDashboard.vue";
+
+// Exercise management
+import ExerciseList from "./views/ExerciseList.vue";
+import AddExercise from "./views/AddExercise.vue";
+import EditExercise from "./views/EditExercise.vue";
+import ViewExercise from "./views/ViewExercise.vue";
+
+// Plans and goals
+import AddExercisePlan from "./views/AddExercisePlan.vue";
+import EditExercisePlan from "./views/EditExercisePlan.vue";
+import ExerciseGoals from "./views/ExerciseGoals.vue";
+import Progress from "./views/Progress.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: "/",
-      alias: "/login",
-      name: "login",
-      component: Login,
-    },
-    {
-      path: "/tutorials",
-      name: "tutorials",
-      component: TutorialsList,
-    },
-    {
-      path: "/edit/:id",
-      name: "edit",
-      component: EditTutorial,
-      props: true,
-    },
-    {
-      path: "/add",
-      name: "add",
-      component: AddTutorial,
-    },
-    {
-      path: "/view/:id",
-      name: "view",
-      component: ViewTutorial,
-      props: true,
-    },
-    {
-      path: "/addLesson/:tutorialId",
-      name: "addLesson",
-      component: AddLesson,
-      props: true,
-    },
-    {
-      path: "/editLesson/:tutorialId/:lessonId",
-      name: "editLesson",
-      component: EditLesson,
-      props: true,
-    },
+    { path: "/", redirect: "/start" },
+    { path: "/start", name: "start", component: LoginStart },
+    { path: "/select-role", name: "selectRole", component: SelectRole },
+    { path: "/google-auth", name: "googleAuth", component: GoogleAuth },
+    { path: "/coach", name: "coachDashboard", component: CoachDashboard },
+    { path: "/athlete", name: "athleteDashboard", component: AthleteDashboard },
+    { path: "/exercises", name: "exerciseList", component: ExerciseList },
+    { path: "/exercise/add", name: "addExercise", component: AddExercise },
+    { path: "/exercise/edit/:id", name: "editExercise", component: EditExercise, props: true },
+    { path: "/exercise/:id", name: "viewExercise", component: ViewExercise, props: true },
+    { path: "/plans/add", name: "addExercisePlan", component: AddExercisePlan },
+    { path: "/plans/edit/:id", name: "editExercisePlan", component: EditExercisePlan, props: true },
+    { path: "/goals", name: "goals", component: ExerciseGoals },
+    { path: "/progress", name: "progress", component: Progress },
   ],
 });
 
 export default router;
+
