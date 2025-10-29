@@ -36,11 +36,9 @@
         cards: [
           { title: "Players", icon: "mdi-account-multiple-outline", route: "/players" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
-          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
-          { title: "Catalog", icon: "mdi-book-open-variant", route: "/catalog" },
-          { title: "Lessons", icon: "mdi-calendar-edit", route: "/lessons" },
-          { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
+          { title: "Catalog", icon: "mdi-dumbbell", route: "/catalog" },
           { title: "Goals", icon: "mdi-target", route: "/goals" },
+          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
       };
     },
