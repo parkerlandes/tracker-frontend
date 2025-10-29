@@ -1,0 +1,35 @@
+-----COACH DASHBOARD-----
+Athletes:
+a.	View Athlete Profiles
+b.	Add Athletes
+
+Exercises:
+c.	View Exercises
+d.	Add/Edit Exercises
+
+Exercise Plans:
+e.	View Exercise Plans
+f.	Add/Edit Exercise Plans
+
+Goals:
+g.	Add/Edit/Delete Athlete Exercise Goals
+
+Progress:
+h.	View Athlete Exercise Results
+i.	View Athlete Progress on Goals
+
+-----COACH DASHBOARD-----
+Athletes:
+a.	View Athlete Profiles
+b.	Add Athletes
+c.  View Athlete Exercise Results
+d.  View Athlete Progress on Goals
+e.  Add/Edit/Delete Athlete Goals
+
+Exercises:
+c.	View Exercises
+d.	Add/Edit Exercises
+
+Exercise Plans:
+e.	View Exercise Plans
+f.	Add/Edit Exercise Plans
