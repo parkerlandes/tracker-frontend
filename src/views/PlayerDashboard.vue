@@ -31,7 +31,7 @@
         playerName: "Jordan Smith",
         cards: [
           { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
-          { title: "Teams", icon: "mdi-sitemap", route: "/teams" },
+          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
           { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
           { title: "Goals", icon: "mdi-target", route: "/goals" },
           { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
