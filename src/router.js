@@ -31,7 +31,7 @@ const router = createRouter({
     { path: "/select-role", name: "selectRole", component: SelectRole },
     { path: "/google-auth", name: "googleAuth", component: GoogleAuth },
     { path: "/coach", name: "coachDashboard", component: CoachDashboard },
-    { path: "/athlete", name: "athleteDashboard", component: AthleteDashboard },
+    { path: "/athlete", name: "AthleteDashboard", component: AthleteDashboard },
     { path: "/exercises", name: "exerciseList", component: ExerciseList },
     { path: "/exercise/add", name: "addExercise", component: AddExercise },
     { path: "/exercise/edit/:id", name: "editExercise", component: EditExercise, props: true },

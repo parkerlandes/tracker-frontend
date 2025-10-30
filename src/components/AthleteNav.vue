@@ -5,7 +5,7 @@
           <!-- Left: App title -->
           <v-col cols="auto">
             <v-btn variant="text" class="text-white text-h6" @click="goHome">
-              <v-icon left>mdi-dumbbell</v-icon> Exercise Tracker
+              <v-icon left>mdi-dumbbell</v-icon> Tracker
             </v-btn>
           </v-col>
   
@@ -35,12 +35,17 @@
   import Utils from "../config/utils";
   
   export default {
-    name: "TopNav",
-    props: {
-      navItems: {
-        type: Array,
-        required: true,
-      },
+    name: "AthleteNav",
+    data() {
+      return {
+        navItems: [
+          { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
+          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
+          { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
+          { title: "Goals", icon: "mdi-target", route: "/goals" },
+          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
+        ],
+      };
     },
     methods: {
       go(route) {
