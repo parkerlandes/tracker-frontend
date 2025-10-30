@@ -31,7 +31,8 @@
         athleteName: "Jordan Smith",
         cards: [
           { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
-          { title: "Record Exercise", icon: "mdi-pencil", route: "/exercises/add" },
+          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
+          { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
           { title: "Goals", icon: "mdi-target", route: "/goals" },
           { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],

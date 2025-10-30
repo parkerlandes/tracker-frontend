@@ -39,10 +39,11 @@ export default {
   data() {
     return {
       navItems: [
-        { title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
-        { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
-        { title: "Exercise Plans", icon: "mdi-calendar-edit", route: "/plans/add" },
-        { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
+          { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/athletes" },
+          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
+          { title: "Catalog", icon: "mdi-dumbbell", route: "/catalog" },
+          { title: "Goals", icon: "mdi-target", route: "/goals" },
+          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
       ],
     };
   },

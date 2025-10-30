@@ -6,7 +6,9 @@
         <v-row>
           <v-col cols="12">
             <h1>Welcome, {{ coachName }}</h1>
-            <p class="text-medium-emphasis mb-6">Manage athletes and plans below.</p>
+            <p class="text-medium-emphasis mb-6">
+              Manage athletes, teams, and lessons below.
+            </p>
           </v-col>
         </v-row>
   
@@ -31,11 +33,11 @@
     data() {
       return {
         coachName: "Coach Taylor",
-        // removed navItems; CoachNav owns them now
         cards: [
-          { title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
-          { title: "Exercises", icon: "mdi-dumbbell", route: "/exercises" },
-          { title: "Exercise Plans", icon: "mdi-calendar-edit", route: "/plans/add" },
+          { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/athletes" },
+          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
+          { title: "Catalog", icon: "mdi-dumbbell", route: "/catalog" },
+          { title: "Goals", icon: "mdi-target", route: "/goals" },
           { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
       };
@@ -55,6 +57,15 @@
     transition: 0.2s ease-in-out;
   }
   </style>
+
+{ title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
+{ title: "Teams", icon: "mdi-sitemap", route: "/teams" },
+{ title: "Progress", icon: "mdi-chart-line", route: "/progress" },
+{ title: "Catalog", icon: "mdi-calendar-edit", route: "/catalog" },
+{ title: "Lessons", icon: "mdi-calendar-edit", route: "/lessons" },
+{ title: "Exercises", icon: "mdi-calendar-edit", route: "/exercises" },
+{ title: "Goals", icon: "mdi-target", route: "/goals" },
+
   
   
   
