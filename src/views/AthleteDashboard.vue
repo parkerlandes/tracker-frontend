@@ -1,9 +1,9 @@
 <template>
     <v-app>
-      <PlayerNav />
+      <AthleteNav />
   
       <v-container fluid class="pa-8 mt-12">
-        <h1>Welcome, {{ playerName }}</h1>
+        <h1>Welcome, {{ athleteName }}</h1>
         <p class="text-medium-emphasis mb-6">
           Track your workouts, view progress, and crush your goals.
         </p>
@@ -21,14 +21,14 @@
   </template>
   
   <script>
-  import PlayerNav from "../components/PlayerNav.vue";
+  import AthleteNav from "../components/AthleteNav.vue";
   
   export default {
-    name: "PlayerDashboard",
-    components: { PlayerNav },
+    name: "AthleteDashboard",
+    components: { AthleteNav },
     data() {
       return {
-        playerName: "Jordan Smith",
+        athleteName: "Jordan Smith",
         cards: [
           { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },

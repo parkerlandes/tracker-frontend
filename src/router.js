@@ -8,7 +8,7 @@ import GoogleAuth from "./views/GoogleAuth.vue";
 
 // Role-based views
 import CoachDashboard from "./views/CoachDashboard.vue";
-import PlayerDashboard from "./views/PlayerDashboard.vue";
+import AthleteDashboard from "./views/AthleteDashboard.vue";
 //import AdminDashboard from "./views/AdminDashboard.vue";
 
 // Exercise management
@@ -31,7 +31,7 @@ const router = createRouter({
     { path: "/select-role", name: "selectRole", component: SelectRole },
     { path: "/google-auth", name: "googleAuth", component: GoogleAuth },
     { path: "/coach", name: "coachDashboard", component: CoachDashboard },
-    { path: "/player", name: "playerDashboard", component: PlayerDashboard },
+    { path: "/athlete", name: "AthleteDashboard", component: AthleteDashboard },
     { path: "/exercises", name: "exerciseList", component: ExerciseList },
     { path: "/exercise/add", name: "addExercise", component: AddExercise },
     { path: "/exercise/edit/:id", name: "editExercise", component: EditExercise, props: true },

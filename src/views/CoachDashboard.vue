@@ -7,7 +7,7 @@
           <v-col cols="12">
             <h1>Welcome, {{ coachName }}</h1>
             <p class="text-medium-emphasis mb-6">
-              Manage players, teams, and lessons below.
+              Manage athletes, teams, and lessons below.
             </p>
           </v-col>
         </v-row>
@@ -34,7 +34,7 @@
       return {
         coachName: "Coach Taylor",
         cards: [
-          { title: "Players", icon: "mdi-account-multiple-outline", route: "/players" },
+          { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/athletes" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
           { title: "Catalog", icon: "mdi-dumbbell", route: "/catalog" },
           { title: "Goals", icon: "mdi-target", route: "/goals" },
@@ -58,7 +58,7 @@
   }
   </style>
 
-{ title: "Players", icon: "mdi-account-group", route: "/players" },
+{ title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
 { title: "Teams", icon: "mdi-sitemap", route: "/teams" },
 { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
 { title: "Catalog", icon: "mdi-calendar-edit", route: "/catalog" },

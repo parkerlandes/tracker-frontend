@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       navItems: [
-          { title: "Players", icon: "mdi-account-multiple-outline", route: "/players" },
+          { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/athletes" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
           { title: "Catalog", icon: "mdi-dumbbell", route: "/catalog" },
           { title: "Goals", icon: "mdi-target", route: "/goals" },
