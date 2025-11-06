@@ -21,29 +21,31 @@
   </template>
   
   <script>
-  import AthleteNav from "../components/AthleteNav.vue";
-  
-  export default {
-    name: "AthleteDashboard",
-    components: { AthleteNav },
-    data() {
-      return {
-        athleteName: "Jordan Smith",
-        cards: [
-          { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
-          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
-          { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
-          { title: "Goals", icon: "mdi-target", route: "/goals" },
-          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
-        ],
-      };
-    },
-    methods: {
-      go(route) {
-        this.$router.push(route);
+    import AthleteNav from "../components/AthleteNav.vue";
+    import Utils from "../config/utils.js";
+
+    export default {
+      name: "AthleteDashboard",
+      components: { AthleteNav },
+      data() {
+        const user = Utils.getStore("user");
+        return {
+          athleteName: user ? `${user.fName} ${user.lName}` : "Athlete",
+          cards: [
+            { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
+            { title: "Teams", icon: "mdi-account-group", route: "/teams" },
+            { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
+            { title: "Goals", icon: "mdi-target", route: "/goals" },
+            { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
+          ],
+        };
       },
-    },
-  };
+      methods: {
+        go(route) {
+          this.$router.push(route);
+        },
+      },
+    };
   </script>
   
   

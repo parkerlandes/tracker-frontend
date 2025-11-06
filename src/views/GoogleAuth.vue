@@ -27,6 +27,7 @@
     window.handleCredentialResponse = handleCredentialResponse;
   
     const client = import.meta.env.VITE_APP_CLIENT_ID;
+    console.log("Client ID Loaded:", client);
     window.google.accounts.id.initialize({
       client_id: client,
       cancel_on_tap_outside: false,
@@ -48,21 +49,33 @@
   
   const handleCredentialResponse = async (response) => {
     try {
-      const res = await AuthServices.loginUser({ credential: response.credential });
-      user.value = res.data;
-      Utils.setStore("user", user.value);
-  
-      const selectedRole = Utils.getStore("selectedRole");
-  
-      if (selectedRole === "coach") {
-        router.push({ name: "coachDashboard" });
-      } else {
-        router.push({ name: "athleteDashboard" });
-      }
+        const res = await AuthServices.loginUser({
+        credential: response.credential,
+        });
+
+        user.value = res.data;
+        Utils.setStore("user", user.value); // store user with role included now ✅
+
+        // ✅ Check role returned from backend
+        if (!user.value.role) {
+        console.warn("No role stored — redirecting to role selection...");
+        return router.push("/select-role");
+        }
+
+        // ✅ Route based on saved DB role
+        if (user.value.role === "coach") {
+        return router.push({ name: "coachDashboard" });
+        } else if (user.value.role === "athlete") {
+        return router.push({ name: "athleteDashboard" });
+        } else {
+        console.warn("Unknown role — redirecting to role selection...");
+        return router.push("/select-role");
+        }
     } catch (err) {
-      console.error("Login failed:", err);
+        console.error("Login failed:", err.response ? err.response.data : err.message);
     }
-  };
+    };
+
   
   // ✅ Automatically show the Google button on mount
   onMounted(() => {

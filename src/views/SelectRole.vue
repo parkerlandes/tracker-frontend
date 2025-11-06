@@ -1,36 +1,89 @@
 <template>
     <v-container class="fill-height d-flex align-center justify-center">
-      <v-card class="pa-6 text-center" elevation="4" max-width="400">
-        <h2>Select Your Role</h2>
-        <p class="mb-4">Are you a coach or an athlete?</p>
+      <v-row justify="center" align="center" class="text-center">
+        <v-col cols="12">
+          <h2 class="mb-6">Select Your Role</h2>
+        </v-col>
   
-        <v-btn color="primary" block class="mb-2" @click="selectRole('coach')">
-          I am a Coach
-        </v-btn>
-        <v-btn color="secondary" block @click="selectRole('athlete')">
-          I am an Athlete
-        </v-btn>
-      </v-card>
+        <v-col cols="6" md="4">
+          <v-card
+            class="pa-6 hoverable"
+            elevation="4"
+            @click="chooseRole('coach')"
+          >
+            <v-icon size="56" color="primary">mdi-account-tie</v-icon>
+            <h3 class="mt-2">Coach</h3>
+          </v-card>
+        </v-col>
+  
+        <v-col cols="6" md="4">
+          <v-card
+            class="pa-6 hoverable"
+            elevation="4"
+            @click="chooseRole('athlete')"
+          >
+            <v-icon size="56" color="secondary">mdi-weight-lifter</v-icon>
+            <h3 class="mt-2">Athlete</h3>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
-  </template>
+</template>
   
-  <script>
-  import Utils from "../config/utils";
-  
-  export default {
-    name: "SelectRole",
-    methods: {
-      selectRole(role) {
-        Utils.setStore("selectedRole", role);
-        this.$router.push("/google-auth");
-      },
-    },
-  };
-  </script>
+<script setup>
+    import axios from "axios";
+    import Utils from "../config/utils.js";
+    import { useRouter } from "vue-router";
+    import { onMounted } from "vue";
+
+    const router = useRouter();
+    const API_URL = "http://localhost:3100/tracker-t9";
+
+    const chooseRole = async (role) => {
+    const user = Utils.getStore("user");
+
+    if (!user) {
+        console.warn("User missing — routing back to Google login...");
+        router.push("/google-auth");
+        return;
+    }
+
+    try {
+        // ✅ Update role in DB
+        await axios.put(`${API_URL}/user/role/${user.id_user}`, { role });
+
+        user.role = role;
+        Utils.setStore("user", user);
+
+        router.push(role === "coach" ? "/coach" : "/athlete");
+
+
+    } catch (error) {
+        console.error("Failed to update role:", error);
+    }
+    };
+
+
+    // ✅ Run this when the page is opened
+    onMounted(() => {
+    const user = Utils.getStore("user");
+    if (!user) {
+        console.warn("No user detected — redirecting to Google auth");
+        router.push("/google-auth");
+    }
+    });
+</script>
   
   <style scoped>
+  .hoverable:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: 0.25s ease-in-out;
+  }
   .fill-height {
     height: 100vh;
   }
   </style>
+  
+  
   
