@@ -38,6 +38,8 @@ const router = createRouter({
     { path: "/plans/edit/:id", name: "editExercisePlan", component: EditExercisePlan, props: true },
     { path: "/goals", name: "goals", component: ExerciseGoals },
     { path: "/progress", name: "progress", component: Progress },
+    { path: "/profile", name: "athleteProfile", component: () => import("./views/AthleteProfile.vue") },
+
   ],
 });
 

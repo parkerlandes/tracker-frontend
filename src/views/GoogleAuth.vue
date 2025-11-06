@@ -56,13 +56,13 @@
         user.value = res.data;
         Utils.setStore("user", user.value); // store user with role included now ✅
 
-        // ✅ Check role returned from backend
+        // Check role returned from backend
         if (!user.value.role) {
         console.warn("No role stored — redirecting to role selection...");
         return router.push("/select-role");
         }
 
-        // ✅ Route based on saved DB role
+        // Route based on saved DB role
         if (user.value.role === "coach") {
         return router.push({ name: "coachDashboard" });
         } else if (user.value.role === "athlete") {
