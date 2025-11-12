@@ -78,11 +78,11 @@
         return;
     }
 
-    // ✅ Use local data first to show instantly
+    // Use local data first to show instantly
     profile.value = { ...storedUser };
 
     try {
-        // ✅ Then fetch fresh copy from DB in case of updates
+        // Then fetch fresh copy from DB in case of updates
         const res = await axios.get(`${API}/user/${storedUser.id_user}`);
         if (res.data) profile.value = res.data;
     } catch (err) {
@@ -94,13 +94,13 @@
     const user = Utils.getStore("user");
     try {
         await axios.put(`${API}/user/${user.id_user}`, profile.value);
-        message.value = "✅ Profile updated successfully!";
+        message.value = "Profile updated successfully!";
 
-        // ✅ Update stored user for other pages
+        // Update stored user for other pages
         Utils.setStore("user", profile.value);
     } catch (err) {
         console.error("Error updating profile:", err);
-        message.value = "❌ Update failed";
+        message.value = "Update failed";
     }
     };
 </script>
