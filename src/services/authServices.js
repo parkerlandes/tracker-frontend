@@ -1,13 +1,11 @@
-import apiClient from "./services.js";
+import axios from "axios";
 
-export default {
-  loginUser(user) {
-    return apiClient.post("login", user);
-  },
-  authorizeUser(code) {
-    return apiClient.post("authorize", code);
-  },
-  logoutUser(token) {
-    return apiClient.post("logout", token);
-  },
-};
+const API_URL = "http://localhost:3100/tracker-t9";
+
+class AuthServices {
+  loginUser(token) {
+    return axios.post(`${API_URL}/login`, token);
+  }
+}
+
+export default new AuthServices();

@@ -7,16 +7,24 @@ export default class Utils {
     }
     return window.localStorage.setItem(name, content);
   };
+  
   // get local storage
   static getStore = (name) => {
-    if (!name) return;
-    return JSON.parse(window.localStorage.getItem(name));
+    if (!name) return null;
+    const value = window.localStorage.getItem(name);
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
   };
+
   // remove item
   static removeItem = (name) => {
     if (!name) return;
     return window.localStorage.removeItem(name);
   };
+
   // validate email
   static isValidEmail = (value) => {
     return value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,64}$/i.test(value)

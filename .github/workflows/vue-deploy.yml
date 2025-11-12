@@ -11,9 +11,9 @@ jobs:
   aws-deploy:
     runs-on: ubuntu-latest
     env:
-      CLIENT_ID: ${{secrets.CLIENT_ID}}
-      API_URL: ${{secrets.API_URL}}
-      CLIENT_URL: ${{secrets.CLIENT_URL}}
+      VITE_APP_CLIENT_ID: ${{secrets.VITE_APP_CLIENT_ID}}
+      VITE_APP_API_URL: ${{secrets.VITE_APP_API_URL}}
+      VITE_APP_CLIENT_URL: ${{secrets.VITE_APP_CLIENT_URL}}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,9 +23,9 @@ jobs:
           node-version: 18
       - run: |
           touch .env
-          echo CLIENT_ID="$CLIENT_ID" >> .env
-          echo API_URL="$API_URL" >> .env
-          echo CLIENT_URL=project3.eaglesoftwareteam.com >> .env
+          echo VITE_APP_CLIENT_ID="$VITE_APP_CLIENT_ID" >> .env
+          echo VITE_APP_API_URL="$VITE_APP_API_URL" >> .env
+          echo VITE_APP_CLIENT_URL=project3.eaglesoftwareteam.com >> .env
           echo SITE_URL=project3.eaglesoftwareteam.com >> .env
 
       - run: npm install
