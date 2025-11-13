@@ -18,6 +18,7 @@ import AddExercisePlan from "./views/AddExercisePlan.vue";
 import EditExercisePlan from "./views/EditExercisePlan.vue";
 import ExerciseGoals from "./views/ExerciseGoals.vue";
 import Progress from "./views/Progress.vue";
+import Catalog from "./views/Catalog.vue";
 
 import Utils from "./config/utils";
 
@@ -39,6 +40,19 @@ const router = createRouter({
     { path: "/goals", name: "goals", component: ExerciseGoals },
     { path: "/progress", name: "progress", component: Progress },
     { path: "/profile", name: "athleteProfile", component: () => import("./views/AthleteProfile.vue") },
+    { path: "/catalog", name: "catalog", component: Catalog },
+    { 
+      path: "/lesson/:id", 
+      name: "lessonDetails", 
+      component: () => import("./views/LessonDetails.vue"), 
+      props: true 
+    },
+    {
+      path: "/lesson/:id_lesson/exercise/:id_exercise",
+      name: "exerciseDetails",
+      component: () => import("./views/ExerciseDetails.vue"),
+      props: true,
+    },
 
   ],
 });
