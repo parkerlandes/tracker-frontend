@@ -49,7 +49,7 @@
     }
 
     try {
-        // ✅ Update role in DB
+        // Update role in DB
         await axios.put(`${API_URL}/user/role/${user.id_user}`, { role });
 
         user.role = role;
@@ -64,7 +64,7 @@
     };
 
 
-    // ✅ Run this when the page is opened
+    // Run this when the page is opened
     onMounted(() => {
     const user = Utils.getStore("user");
     if (!user) {

@@ -54,7 +54,7 @@
         });
 
         user.value = res.data;
-        Utils.setStore("user", user.value); // store user with role included now ✅
+        Utils.setStore("user", user.value); // store user with role included now 
 
         // Check role returned from backend
         if (!user.value.role) {
@@ -77,7 +77,7 @@
     };
 
   
-  // ✅ Automatically show the Google button on mount
+  // Automatically show the Google button on mount
   onMounted(() => {
     startGoogleLogin();
   });
