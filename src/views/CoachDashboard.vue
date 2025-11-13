@@ -58,13 +58,7 @@
   }
   </style>
 
-{ title: "Athletes", icon: "mdi-account-group", route: "/athletes" },
-{ title: "Teams", icon: "mdi-sitemap", route: "/teams" },
-{ title: "Progress", icon: "mdi-chart-line", route: "/progress" },
-{ title: "Catalog", icon: "mdi-calendar-edit", route: "/catalog" },
-{ title: "Lessons", icon: "mdi-calendar-edit", route: "/lessons" },
-{ title: "Exercises", icon: "mdi-calendar-edit", route: "/exercises" },
-{ title: "Goals", icon: "mdi-target", route: "/goals" },
+
 
   
   
