@@ -108,7 +108,7 @@
   const editDialog = ref(false);
   const deleteDialog = ref(false);
   const deleteExerciseTarget = ref(null);
-  const API = "http://localhost:3100/tracker-t9";
+  const API = "http://localhost:3129/tracker-t9";
   
   const loadLessonAndExercises = async () => {
     const id = route.params.id;

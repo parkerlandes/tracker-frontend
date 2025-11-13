@@ -55,13 +55,12 @@
   import Utils from "../config/utils.js";
   import { useRouter } from "vue-router";
   import CoachNav from "../components/CoachNav.vue";
+  import {} from "../services/CatalogServices.js";
   
   const lessons = ref([]);
   const loading = ref(true);
   const error = ref("");
   const router = useRouter();
-  
-  const API = "http://localhost:3100/tracker-t9/lessons";
   
   onMounted(async () => {
     try {

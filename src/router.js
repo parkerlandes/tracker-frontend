@@ -19,8 +19,7 @@ import EditExercisePlan from "./views/EditExercisePlan.vue";
 import ExerciseGoals from "./views/ExerciseGoals.vue";
 import Progress from "./views/Progress.vue";
 import Catalog from "./views/Catalog.vue";
-
-import Utils from "./config/utils";
+import AthleteList from "./views/AthleteList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,6 +52,7 @@ const router = createRouter({
       component: () => import("./views/ExerciseDetails.vue"),
       props: true,
     },
+    { path: "/athletes", name: "athleteList", component: AthleteList }
 
   ],
 });

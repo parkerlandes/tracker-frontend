@@ -1,10 +1,9 @@
-import axios from "axios";
 
-const API_URL = "http://localhost:3100/tracker-t9";
+import apiClient from "./services.js";
 
 class AuthServices {
   loginUser(token) {
-    return axios.post(`${API_URL}/login`, token);
+    return apiClient.post(`${API_URL}/login`, token);
   }
 }
 

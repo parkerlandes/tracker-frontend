@@ -3,11 +3,12 @@ import Utils from "../config/utils.js";
 import AuthServices from "./authServices.js";
 import Router from "../router.js";
 
+
 var baseurl = "";
 if (import.meta.env.DEV) {
-  baseurl = "http://localhost/tracker";
+  baseurl = "http://localhost/tracker-t9/";
 } else {
-  baseurl = "/tracker";
+  baseurl = "/tracker-t9/";
 }
 
 const apiClient = axios.create({

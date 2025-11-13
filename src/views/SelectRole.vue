@@ -37,7 +37,7 @@
     import { onMounted } from "vue";
 
     const router = useRouter();
-    const API_URL = "http://localhost:3100/tracker-t9";
+    const API_URL = "http://localhost:3129/tracker-t9";
 
     const chooseRole = async (role) => {
     const user = Utils.getStore("user");
