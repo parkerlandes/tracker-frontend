@@ -31,16 +31,17 @@
 </template>
   
 <script setup>
-    import axios from "axios";
     import Utils from "../config/utils.js";
     import { useRouter } from "vue-router";
     import { onMounted } from "vue";
+    import selectRoleServices from  "../services/selectRoleServices.js";
+
 
     const router = useRouter();
-    const API_URL = "http://localhost:3100/tracker-t9";
-
     const chooseRole = async (role) => {
     const user = Utils.getStore("user");
+    const {updateRole} = selectRoleServices;
+
 
     if (!user) {
         console.warn("User missing — routing back to Google login...");
@@ -49,20 +50,20 @@
     }
 
     try {
-        // Update role in DB
-        await axios.put(`${API_URL}/user/role/${user.id_user}`, { role });
-
         user.role = role;
         Utils.setStore("user", user);
 
+        // Update role in DB
+        await updateRole(8, role); //id_user 
+
+        
         router.push(role === "coach" ? "/coach" : "/athlete");
 
-
-    } catch (error) {
+      } catch (error) {
         console.error("Failed to update role:", error);
-    }
+    
+      }
     };
-
 
     // Run this when the page is opened
     onMounted(() => {
