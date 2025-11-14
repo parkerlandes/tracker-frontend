@@ -38,7 +38,8 @@ const handleCredentialResponse = async (response) => {
       Utils.setStore("user", user.value);
       fName.value = user.value.fName;
       lName.value = user.value.lName;
-      router.push({ name: "tutorials" });
+      //router.push(user.value.role === "coach" ? "/coach" : "/athlete");
+      router.push("/athlete");
     })
     .catch((error) => {
       console.log("error", error);
