@@ -52,64 +52,52 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from "vue";
-  import axios from "axios";
-  import Utils from "../config/utils.js";
-  import CoachNav from "../components/CoachNav.vue";
-  
-  const athletes = ref([]);
-  const teams = ref([]);
-  const snackbar = ref({ show: false, text: "", color: "success" });
-  const API = "http://localhost:3129/tracker-t9";
-  
-  const showSnackbar = (text, color = "success") => {
-    snackbar.value = { show: true, text, color };
-  };
-  
-  // Load athletes + teams
-  onMounted(async () => {
-    const user = Utils.getStore("user");
-    try {
-      const [athRes, teamRes] = await Promise.all([
-        axios.get(`${API}/user/athletes`, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        }),
-        axios.get(`${API}/teams`, {
-          headers: { Authorization: `Bearer ${user.token}` },
-        }),
-      ]);
-  
-      athletes.value = athRes.data;
-      teams.value = teamRes.data;
-    } catch (err) {
-      console.error("Error loading data:", err);
-    }
-  });
-  
-  // Assign athlete to team
-  const assignToTeam = async (athlete) => {
-    if (!athlete.selectedTeam) {
-      return showSnackbar("Please select a team first", "warning");
-    }
-  
-    const user = Utils.getStore("user");
-    try {
-      await axios.post(
-        `${API}/user-teams`,
-        {
-          id_user: athlete.id_user,
-          id_team: athlete.selectedTeam,
-        },
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
-  
-      showSnackbar(
-        `${athlete.fName} ${athlete.lName} assigned successfully!`
-      );
-    } catch (err) {
-      console.error("Error assigning athlete:", err);
-      showSnackbar("Failed to assign athlete", "error");
-    }
-  };
-  </script>
+import { ref, onMounted } from "vue";
+import CoachNav from "../components/CoachNav.vue";
+import athleteListServices from "../services/athleteListServices.js";
+
+const athletes = ref([]);
+const teams = ref([]);
+const snackbar = ref({ show: false, text: "", color: "success" });
+
+const showSnackbar = (text, color = "success") => {
+  snackbar.value = { show: true, text, color };
+};
+
+// Load athletes + teams
+onMounted(async () => {
+  try {
+    const athRes = await athleteListServices.getAllAthletes();
+    console.log("Athletes loaded:", athRes.data);
+
+    const teamRes = await athleteListServices.getAllTeams();
+    console.log("Teams loaded:", teamRes.data);
+
+    athletes.value = athRes.data;
+    teams.value = teamRes.data;
+  } catch (err) {
+    console.error("Error loading data:", err.response ? err.response.data : err.message);
+    showSnackbar("Failed to load athletes or teams", "error");
+  }
+});
+
+// Assign athlete to team
+const assignToTeam = async (athlete) => {
+  if (!athlete.selectedTeam) {
+    return showSnackbar("Please select a team first", "warning");
+  }
+
+  try {
+    await athleteListServices.assignToTeam(
+      athlete.id_user,
+      athlete.selectedTeam
+    );
+    showSnackbar(`${athlete.fName} ${athlete.lName} assigned successfully!`);
+  } catch (err) {
+    console.error("Error assigning athlete:", err);
+    showSnackbar("Failed to assign athlete", "error");
+  }
+};
+</script>
+
   
