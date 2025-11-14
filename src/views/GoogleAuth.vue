@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <v-container class="fill-height d-flex align-center justify-center">
       <v-card class="pa-6 text-center" elevation="4" max-width="400">
         <h2>Sign in with Google</h2>
@@ -32,8 +32,8 @@
       client_id: client,
       cancel_on_tap_outside: false,
       auto_select: false,
-      callback: window.handleCredentialResponse, -->
-    <!-- });
+      callback: window.handleCredentialResponse,
+    });
   
     window.google.accounts.id.renderButton(
       document.getElementById("parent_id"),
@@ -64,8 +64,8 @@
 
         // Route based on saved DB role
         if (user.value.role === "coach") {
-        return router.push({ name: "coachDashboard" }); -->
-        <!-- } else if (user.value.role === "athlete") {
+        return router.push({ name: "coachDashboard" }); 
+        } else if (user.value.role === "athlete") {
         return router.push({ name: "athleteDashboard" });
         } else {
         console.warn("Unknown role — redirecting to role selection...");
@@ -81,15 +81,15 @@
   onMounted(() => {
     startGoogleLogin();
   });
-  </script> -->
+  </script> 
   
-  <!-- <style scoped>
+  <style scoped>
   .fill-height {
     height: 100vh;
   }
-  </style> -->
+  </style>
 
-<script setup>
+<!-- <script setup>
 import SocialLogin from "../components/SocialLogin.vue";
 </script>
 
@@ -102,4 +102,4 @@ import SocialLogin from "../components/SocialLogin.vue";
     <SocialLogin />
     <br /><br />
   </v-container>
-</template>
+</template> -->

@@ -51,7 +51,7 @@
   
   <script setup>
     import { ref, onMounted } from "vue";
-    import CatalogServices from "../services/CatalogServices.js";
+    import CatalogServices from "../services/catalogServices.js";
     import CoachNav from "../components/CoachNav.vue";
     import { useRouter } from "vue-router";
 
