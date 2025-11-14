@@ -50,38 +50,33 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from "vue";
-  import axios from "axios";
-  import Utils from "../config/utils.js";
-  import { useRouter } from "vue-router";
-  import CoachNav from "../components/CoachNav.vue";
-  import {} from "../services/CatalogServices.js";
-  
-  const lessons = ref([]);
-  const loading = ref(true);
-  const error = ref("");
-  const router = useRouter();
-  
-  onMounted(async () => {
+    import { ref, onMounted } from "vue";
+    import CatalogServices from "../services/CatalogServices.js";
+    import CoachNav from "../components/CoachNav.vue";
+    import { useRouter } from "vue-router";
+
+    const lessons = ref([]);
+    const loading = ref(true);
+    const error = ref("");
+    const router = useRouter();
+
+    onMounted(async () => {
     try {
-      const token = Utils.getStore("token");
-      const res = await axios.get(API, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      lessons.value = res.data;
+        const res = await CatalogServices.getAll();
+        lessons.value = res.data;
     } catch (err) {
-      console.error("Error fetching lessons:", err);
-      error.value = "Failed to load lessons.";
+        console.error("Error fetching lessons:", err);
+        error.value = "Failed to load lessons.";
     } finally {
-      loading.value = false;
+        loading.value = false;
     }
-  });
-  
-  const goToLesson = (id) => {
-    router.push(`/lesson/${id}`); // Adjust this route if you have a LessonDetails page
-  };
-  </script>
-  
+    });
+
+    const goToLesson = (id) => {
+    router.push(`/lesson/${id}`);
+    };
+    </script>
+    
   <style scoped>
   .hoverable:hover {
     transform: scale(1.05);

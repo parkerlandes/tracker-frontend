@@ -1,10 +1,13 @@
-
 import apiClient from "./services.js";
 
-class AuthServices {
-  loginUser(token) {
-    return apiClient.post(`${API_URL}/login`, token);
-  }
-}
-
-export default new AuthServices();
+export default {
+  loginUser(user) {
+    return apiClient.post("login", user);
+  },
+  authorizeUser(code) {
+    return apiClient.post("authorize", code);
+  },
+  logoutUser(token) {
+    return apiClient.post("logout", token);
+  },
+};
