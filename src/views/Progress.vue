@@ -82,7 +82,7 @@ export default {
 </script>
 
 <template>
-  <v-container class="pa-6">
+  <v-container class="pa-6 mt-12">
     <AthleteNav />
     <v-row justify="center" class="mt-6">
       <v-col cols="12" md="8" lg="6">
