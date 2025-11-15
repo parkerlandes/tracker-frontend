@@ -1,20 +1,7 @@
 <script setup>
   import SocialLogin from '../components/SocialLogin.vue';
 
-  // export default {
-  //   name: "LoginStart",
-  //   methods: {
-  //     // goToCreate() {
-  //     //   // New users choose a role first
-  //     //   this.$router.push("/select-role");
-  //     // },
-  //     goToLogin() {
-  //       // Returning users go straight to Google sign-in
-  //       this.$router.push("/google-auth");
-  //     },
-  //   },
-  // };
-  </script>
+</script>
   
   <style scoped>
   .fill-height {
@@ -35,6 +22,7 @@
         <h2 class="mt-4 mb-2">Welcome to Exercise Tracker</h2>
         <p class="mb-6 text-medium-emphasis">
           Log in or create an account to get started with your personalized fitness tracking.
+          
            <SocialLogin />
         </p>
   
