@@ -1,6 +1,5 @@
 <script setup>
   import SocialLogin from '../components/SocialLogin.vue';
-
 </script>
   
   <style scoped>

@@ -20,17 +20,28 @@ import ExerciseGoals from "./views/ExerciseGoals.vue";
 import Progress from "./views/Progress.vue";
 import Catalog from "./views/Catalog.vue";
 
+//Teams views - Player & coach 
+import Teams from "./views/Teams.vue"
+
 import Utils from "./config/utils";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    //Startup
     { path: "/", redirect: "/start" },
     { path: "/start", name: "start", component: LoginStart },
     { path: "/select-role", name: "selectRole", component: SelectRole },
     { path: "/google-auth", name: "googleAuth", component: GoogleAuth },
+
+    //Coach Routes
     { path: "/coach", name: "coachDashboard", component: CoachDashboard },
+
+    //Athlete Routes
     { path: "/athlete", name: "athleteDashboard", component: AthleteDashboard },
+    { path: "/teams", name: "teams", component: Teams},
+
+    //Ambigous - Coach's & Players can view it
     { path: "/exercises", name: "exerciseList", component: ExerciseList },
     { path: "/exercise/add", name: "addExercise", component: AddExercise },
     { path: "/exercise/edit/:id", name: "editExercise", component: EditExercise, props: true },

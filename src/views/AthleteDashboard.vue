@@ -34,7 +34,7 @@
           cards: [
             { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
             { title: "Teams", icon: "mdi-account-group", route: "/teams" },
-            { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
+            { title: "Workouts", icon: "mdi-dumbbell", route: "/catalog" },
             { title: "Goals", icon: "mdi-target", route: "/goals" },
             { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
           ],
