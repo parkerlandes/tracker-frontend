@@ -4,10 +4,14 @@
         <v-row align="center" justify="space-between">
           <!-- Left: App title -->
           <v-col cols="auto">
-            <v-btn variant="text" class="text-white text-h6" @click="goHome">
-              <v-icon left>mdi-dumbbell</v-icon> Tracker
-            </v-btn>
-          </v-col>
+          <v-btn variant="text" class="text-white text-h6" @click="goHome">
+            <v-avatar size="32" class="mr-2" v-if="user?.picture">
+             <img :src="user.picture" alt="Profile" />
+            </v-avatar>
+            <v-icon left v-else>mdi-dumbbell</v-icon>
+            Fitness - Tracker
+          </v-btn>
+        </v-col>
   
           <!-- Right: Navigation links -->
           <v-col cols="auto">
@@ -37,7 +41,9 @@
   export default {
     name: "AthleteNav",
     data() {
+      const user = Utils.getStore("user");
       return {
+        user,
         navItems: [
           { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
@@ -52,7 +58,8 @@
         this.$router.push(route);
       },
       goHome() {
-        const role = Utils.getStore("selectedRole");
+        const user = Utils.getStore("user");
+        const role = user.role;       
         if (role === "coach") this.$router.push("/coach");
         else this.$router.push("/athlete");
       },

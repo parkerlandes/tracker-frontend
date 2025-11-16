@@ -38,8 +38,15 @@ const handleCredentialResponse = async (response) => {
       Utils.setStore("user", user.value);
       fName.value = user.value.fName;
       lName.value = user.value.lName;
+      
+      if(user.value.role === "admin"){
+        router.push("/admin")
+      }else{
+        router.push(user.value.role === "coach" ? "/coach" : "/athlete");
+      }
+
       //router.push(user.value.role === "coach" ? "/coach" : "/athlete");
-      router.push("/athlete");
+      //router.push("/athlete");
     })
     .catch((error) => {
       console.log("error", error);
