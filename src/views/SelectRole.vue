@@ -54,7 +54,7 @@
         Utils.setStore("user", user);
 
         // Update role in DB
-        await updateRole(8, role); //id_user 
+        await updateRole(user.id, role); //id_user 
 
         
         router.push(role === "coach" ? "/coach" : "/athlete");

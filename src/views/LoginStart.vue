@@ -22,12 +22,8 @@
         <h2 class="mt-4 mb-2">Welcome to Exercise Tracker</h2>
         <p class="mb-6 text-medium-emphasis">
           Log in or create an account to get started with your personalized fitness tracking.
-          
-           <SocialLogin />
         </p>
-  
-        
-
+        <SocialLogin />
       </v-card>
     </v-container>
   </template>

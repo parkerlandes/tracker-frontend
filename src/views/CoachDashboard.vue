@@ -5,7 +5,7 @@
       <v-container fluid class="pa-8 mt-12">
         <v-row>
           <v-col cols="12">
-            <h1>Welcome, {{ coachName }}</h1>
+            <h1>Coach - {{ coachName }}</h1>
             <p class="text-medium-emphasis mb-6">
               Manage athletes, teams, and lessons below.
             </p>
@@ -26,13 +26,15 @@
   
   <script>
   import CoachNav from "../components/CoachNav.vue";
+  import Utils from "../config/utils";
   
   export default {
     name: "CoachDashboard",
     components: { CoachNav },
     data() {
+      const user = Utils.getStore("user");
       return {
-        coachName: "Coach Taylor",
+        coachName: user ? `${user.lName}` : "Coach",
         cards: [
           { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/athletes" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
@@ -50,13 +52,13 @@
   };
   </script>
   
-  <style scoped>
+  <!-- <style scoped>
   .hoverable:hover {
     cursor: pointer;
     transform: scale(1.03);
     transition: 0.2s ease-in-out;
   }
-  </style>
+  </style> -->
 
 
 

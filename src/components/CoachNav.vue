@@ -52,7 +52,9 @@ export default {
       this.$router.push(route);
     },
     goHome() {
-      const role = Utils.getStore("selectedRole");
+      const user = Utils.getStore("user");
+      role = user.role;
+      console.log(role);
       if (role === "coach") this.$router.push("/coach");
       else this.$router.push("/athlete");
     },
