@@ -1,5 +1,5 @@
 <script setup>
-import ExercisePlanServicesServices from "../services/exercisePlanServices";
+import ExercisePlanServicesServices from "../services/exercisePlanServices.js";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 

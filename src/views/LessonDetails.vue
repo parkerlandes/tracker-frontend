@@ -96,9 +96,9 @@
   <script setup>
   import { ref, onMounted } from "vue";
   import { useRoute } from "vue-router";
-  import axios from "axios";
+  import LessonDetails from "../services/lessonDetailsServices.js";
   import Utils from "../config/utils.js";
-  import CoachNav from "../components/CoachNav.vue"; // ✅ include navigation
+  import CoachNav from "../components/CoachNav.vue";
   
   const route = useRoute();
   const lesson = ref(null);
@@ -108,18 +108,15 @@
   const editDialog = ref(false);
   const deleteDialog = ref(false);
   const deleteExerciseTarget = ref(null);
-  const API = "http://localhost:3100/tracker-t9";
   
   const loadLessonAndExercises = async () => {
     const id = route.params.id;
     const user = Utils.getStore("user");
     try {
-      const lessonRes = await axios.get(`${API}/lessons/${id}`);
+      const lessonRes = await LessonDetails.getLesson(id);
       lesson.value = lessonRes.data;
   
-      const exercisesRes = await axios.get(`${API}/lesson/${id}/exercises`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const exercisesRes = await LessonDetails.getLesson(id, user.token);
       exercises.value = exercisesRes.data;
     } catch (err) {
       console.error("Error loading lesson or exercises:", err);
@@ -132,9 +129,7 @@
     const id = route.params.id;
     const user = Utils.getStore("user");
     try {
-      await axios.post(`${API}/lesson/${id}/exercises`, newExercise.value, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      await LessonDetails.newLesson(id, newExercise.value, user.token);
       newExercise.value = { name: "", description: "", reps: "", sets: "" };
       await loadLessonAndExercises();
     } catch (err) {
@@ -150,11 +145,7 @@
   const saveEdit = async () => {
     const user = Utils.getStore("user");
     try {
-      await axios.put(
-        `${API}/lesson/${editExercise.value.id_lesson}/exercises/${editExercise.value.id_exercise}`,
-        editExercise.value,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      await LessonDetails.updateLesson(editExercise.value.id_lesson, editExercise.value.id_exercise, editExercise.value, user.token);
       editDialog.value = false;
       await loadLessonAndExercises();
     } catch (err) {
@@ -172,10 +163,7 @@
     const user = Utils.getStore("user");
   
     try {
-      await axios.delete(
-        `${API}/lesson/${exercise.id_lesson}/exercises/${exercise.id_exercise}`,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      await LessonDetails.deleteLesson(exercise.id_lesson, exercise.id_exercise, user.token);
       deleteDialog.value = false;
       await loadLessonAndExercises();
     } catch (err) {
