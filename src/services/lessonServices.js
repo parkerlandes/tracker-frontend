@@ -1,4 +1,4 @@
-import apiClient from "./services";
+import apiClient from "./services.js";
 
 export default {
   getLessons() {

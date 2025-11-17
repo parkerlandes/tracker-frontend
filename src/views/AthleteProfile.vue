@@ -58,9 +58,9 @@
   
   <script setup>
     import { ref, onMounted } from "vue";
-    import axios from "axios";
     import Utils from "../config/utils.js";
     import AthleteNav from "../components/AthleteNav.vue";
+    import athleteProfileServices from "../services/athleteProfileServices.js";
 
     const profile = ref({
     fName: "",
@@ -68,7 +68,6 @@
     email: "",
     });
     const message = ref("");
-    const API = "http://localhost:3100/tracker-t9";
 
     onMounted(async () => {
     const storedUser = Utils.getStore("user");
@@ -83,7 +82,7 @@
 
     try {
         // Then fetch fresh copy from DB in case of updates
-        const res = await axios.get(`${API}/user/${storedUser.id_user}`);
+        const res = await getAthlete(storedUser.id_user);
         if (res.data) profile.value = res.data;
     } catch (err) {
         console.error("Error loading profile:", err);
@@ -93,7 +92,7 @@
     const saveProfile = async () => {
     const user = Utils.getStore("user");
     try {
-        await axios.put(`${API}/user/${user.id_user}`, profile.value);
+        await updateAthlete(user.id_user, profile.value);
         message.value = "Profile updated successfully!";
 
         // Update stored user for other pages
