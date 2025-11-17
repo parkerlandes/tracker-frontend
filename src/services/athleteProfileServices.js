@@ -6,5 +6,5 @@ export default {
     },
     updateAthlete(athleteId, data){
         return apiClient.put(`${API}/user/${athleteId}`, data);
-    }
+    },
 }

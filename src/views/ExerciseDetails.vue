@@ -22,16 +22,15 @@
   <script setup>
   import { ref, onMounted } from "vue";
   import { useRoute } from "vue-router";
-  import axios from "axios";
+  import ExerciseDetails from "../services/exerciseDetailsServices";
   
   const route = useRoute();
   const exercise = ref(null);
-  const API_URL = "http://localhost:3100/tracker-t9";
   
   onMounted(async () => {
     try {
       const { id_lesson, id_exercise } = route.params;
-      const res = await axios.get(`${API_URL}/lesson/${id_lesson}/exercises/${id_exercise}`);
+      const res = await ExerciseDetails.get();
       exercise.value = res.data;
     } catch (err) {
       console.error("Error loading exercise:", err);
