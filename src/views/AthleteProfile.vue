@@ -82,7 +82,7 @@
 
     try {
         // Then fetch fresh copy from DB in case of updates
-        const res = await getAthlete(storedUser.id_user);
+        const res = await athleteProfileServices.getAthlete(storedUser.id_user);
         if (res.data) profile.value = res.data;
     } catch (err) {
         console.error("Error loading profile:", err);
@@ -92,7 +92,7 @@
     const saveProfile = async () => {
     const user = Utils.getStore("user");
     try {
-        await updateAthlete(user.id_user, profile.value);
+        await athleteProfileServices.updateAthlete(user.id_user, profile.value);
         message.value = "Profile updated successfully!";
 
         // Update stored user for other pages
