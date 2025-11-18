@@ -7,4 +7,7 @@ export default {
   getTeam(id_team) {
     return apiClient.get(`/teams/${id_team}`);
   },
+  getTeamMembers(id_team) {
+    return apiClient.get(`/user-teams/team/${id_team}`);
+  },
 };
