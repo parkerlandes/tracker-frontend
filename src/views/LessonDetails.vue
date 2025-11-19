@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <!-- ✅ Always show Coach Navigation -->
+      <!-- Always show Coach Navigation -->
       <CoachNav />
   
       <v-container class="mt-10">
