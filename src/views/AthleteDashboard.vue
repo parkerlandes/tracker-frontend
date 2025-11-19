@@ -88,7 +88,6 @@
 
 <script setup>
 //REPLACE THE INITIALS IN THE LESSONS & SUCH TO DISPLAY IMAGES STORED BY THE USERS
-
 import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import AthleteNav from "../components/AthleteNav.vue";
