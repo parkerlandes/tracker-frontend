@@ -19,6 +19,7 @@ import EditExercisePlan from "./views/EditExercisePlan.vue";
 import ExerciseGoals from "./views/ExerciseGoals.vue";
 import Progress from "./views/Progress.vue";
 import Catalog from "./views/Catalog.vue";
+import TeamDetails from "./views/TeamDetails.vue";
 
 //Teams views - Player & coach 
 import Teams from "./views/Teams.vue"
@@ -40,6 +41,7 @@ const router = createRouter({
     //Athlete Routes
     { path: "/athlete", name: "athleteDashboard", component: AthleteDashboard },
     { path: "/teams", name: "teams", component: Teams},
+    { path: "/teams/:id", name: "teamDetails", component: TeamDetails, props: true},
 
     //Ambigous - Coach's & Players can view it
     { path: "/exercises", name: "exerciseList", component: ExerciseList },
@@ -74,5 +76,4 @@ router.beforeEach((to, from, next) => {
 
 
 export default router;
-
 
