@@ -52,7 +52,7 @@
   
         <v-alert v-else type="info" class="mt-6">No exercises found for this lesson.</v-alert>
   
-        <!-- 🧩 Edit Dialog -->
+        <!-- Edit Dialog -->
         <v-dialog v-model="editDialog" max-width="500px">
           <v-card class="pa-6">
             <h3 class="mb-4">Edit Exercise</h3>
@@ -72,7 +72,7 @@
           </v-card>
         </v-dialog>
   
-        <!-- 🗑️ Delete Confirmation Dialog -->
+        <!-- Delete Confirmation Dialog -->
         <v-dialog v-model="deleteDialog" max-width="400px">
           <v-card class="pa-6 text-center">
             <v-icon color="error" size="48">mdi-alert-circle</v-icon>
@@ -98,7 +98,7 @@
   import { useRoute } from "vue-router";
   import axios from "axios";
   import Utils from "../config/utils.js";
-  import CoachNav from "../components/CoachNav.vue"; // ✅ include navigation
+  import CoachNav from "../components/CoachNav.vue"; // include navigation
   
   const route = useRoute();
   const lesson = ref(null);
