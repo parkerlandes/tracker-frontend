@@ -94,7 +94,7 @@ import { useRouter } from "vue-router";
 import AthleteNav from "../components/AthleteNav.vue";
 import TeamsBox from "../components/TeamsBox.vue";
 import GoalsBox from "../components/GoalsBox.vue";
-import LessonBox from "../components/lessonBox.vue";
+import LessonBox from "../components/LessonBox.vue";
 import Utils from "../config/utils.js";
 import progressServices from "../services/progressServices";
 import GoalServices from "../services/goalServices";
