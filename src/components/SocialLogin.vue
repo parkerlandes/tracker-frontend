@@ -9,6 +9,7 @@ const fName = ref("");
 const lName = ref("");
 const user = ref({});
 
+
 const loginWithGoogle = () => {
   window.handleCredentialResponse = handleCredentialResponse;
   const client = import.meta.env.VITE_APP_CLIENT_ID;

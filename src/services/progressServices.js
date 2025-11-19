@@ -8,3 +8,4 @@ export default {
     return apiClient.get(`/user-metrics`)
   }
 };
+

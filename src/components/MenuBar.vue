@@ -21,6 +21,7 @@ const resetMenu = () => {
   }
 };
 
+
 const logout = () => {
   AuthServices.logoutUser(user.value)
     .then((response) => {

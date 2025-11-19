@@ -205,6 +205,7 @@ onMounted(() => {
   fetchGoals();
 });
 
+
 watch(
   () => selectedGoalId.value,
   (newId) => {
@@ -216,3 +217,4 @@ watch(
   }
 );
 </script>
+

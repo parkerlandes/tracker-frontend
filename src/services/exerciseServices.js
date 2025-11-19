@@ -26,3 +26,4 @@ export default {
     return apiClient.get(`/tutorials?title=${title}`);
   },
 };
+

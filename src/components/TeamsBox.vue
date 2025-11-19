@@ -7,6 +7,7 @@
       </v-btn>
     </div>
 
+    
     <div v-if="loading" class="text-medium-emphasis">Loading teams…</div>
     <div v-else-if="error" class="text-error">{{ error }}</div>
     <div v-else-if="!teams.length" class="text-medium-emphasis">No teams yet.</div>

@@ -5,3 +5,4 @@ export default {
     return apiClient.get(`/player-goal-progress/goal/${id_player_goal}`);
   },
 };
+
