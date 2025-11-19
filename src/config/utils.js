@@ -9,6 +9,7 @@ export default class Utils {
     return window.localStorage.setItem(name, content);
   };
   
+  
   // get local storage
   static getStore = (name) => {
     if (!name) return null;

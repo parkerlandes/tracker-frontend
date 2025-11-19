@@ -5,3 +5,4 @@ export default {
     return apiClient.get(`/player-goals/user/${id_user}`);
   },
 };
+

@@ -103,4 +103,5 @@
       message.value = "Update failed";
     }
   };
+  
 </script>

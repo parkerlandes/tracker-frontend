@@ -13,6 +13,7 @@ import { Line } from "vue-chartjs";
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend);
 
+
 export default {
   name: "ProgressChart",
   components: { Line },

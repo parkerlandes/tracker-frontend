@@ -26,6 +26,7 @@ import Teams from "./views/Teams.vue"
 
 import Utils from "./config/utils";
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

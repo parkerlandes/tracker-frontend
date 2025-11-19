@@ -8,3 +8,4 @@ export default {
     return apiClient.put(`/users/${id_user}`, payload);
   },
 };
+

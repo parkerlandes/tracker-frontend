@@ -27,6 +27,7 @@
   </v-card>
 </template>
 
+
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";

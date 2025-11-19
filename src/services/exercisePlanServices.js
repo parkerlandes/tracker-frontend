@@ -17,3 +17,4 @@ export default {
     return apiClient.delete(`/tutorials/${tutorialId}/lessons/${id}`);
   },
 };
+

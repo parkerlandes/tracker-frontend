@@ -11,3 +11,4 @@ export default {
     return apiClient.get(`/user-teams/team/${id_team}`);
   },
 };
+
