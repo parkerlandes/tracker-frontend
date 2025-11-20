@@ -13,7 +13,7 @@
           class="d-flex mx-auto my-6"
         />
   
-        <!-- Athlete Cards -->
+        <!-- Cards -->
         <v-row v-else>
           <v-col
             v-for="athlete in athletes"
