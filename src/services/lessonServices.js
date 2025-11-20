@@ -1,6 +1,7 @@
-import apiClient from "./services";
+import apiClient from "./services.js";
 
 export default {
+  // 🔹 Lessons
   getLessons() {
     return apiClient.get("/lessons");
   },
@@ -10,5 +11,5 @@ export default {
   getLessonsForUser(id_user) {
     return apiClient.get(`/lessons/userLesson/${id_user}`);
   },
-};
 
+};

@@ -12,6 +12,7 @@ import ExerciseList from "./views/ExerciseList.vue";
 import AddExercise from "./views/AddExercise.vue";
 import EditExercise from "./views/EditExercise.vue";
 import ViewExercise from "./views/ViewExercise.vue";
+import ExerciseDetails from "./views/ExerciseDetails.vue"
 
 // Plans & Goals
 import AddExercisePlan from "./views/AddExercisePlan.vue";
@@ -23,6 +24,13 @@ import TeamDetails from "./views/TeamDetails.vue";
 
 //Teams views - Player & coach 
 import Teams from "./views/Teams.vue"
+
+import ViewAthletes from "./views/ViewAthletes.vue";
+import AthleteLessons from "./views/AthleteLessons.vue";
+import AthleteWorkout from "./views/AthleteWorkout.vue";
+import LessonDetails from "./views/LessonDetails.vue";
+
+
 
 import Utils from "./config/utils";
 
@@ -38,11 +46,21 @@ const router = createRouter({
 
     //Coach Routes
     { path: "/coach", name: "coachDashboard", component: CoachDashboard },
+    { path: "/athletes", name: "viewAthletes", component: ViewAthletes },
+    { path: "/catalog", name: "catalog", component: Catalog },
+    { 
+      path: "/lesson/:id", name: "lessonDetails", component: LessonDetails, props: true 
+    },
+    {
+      path: "/lesson/:id_lesson/exercise/:id_exercise", name: "exerciseDetails", component: ExerciseDetails, props: true,
+    },
 
     //Athlete Routes
     { path: "/athlete", name: "athleteDashboard", component: AthleteDashboard },
     { path: "/teams", name: "teams", component: Teams},
     { path: "/teams/:id", name: "teamDetails", component: TeamDetails, props: true},
+    { path: "/workout", name: "workout", component: AthleteLessons, props: true},
+    { path: "/workout/:id_lesson", name: "athleteWorkout", component: AthleteWorkout, props: true},
 
     //Ambigous - Coach's & Players can view it
     { path: "/exercises", name: "exerciseList", component: ExerciseList },
@@ -54,19 +72,7 @@ const router = createRouter({
     { path: "/goals", name: "goals", component: ExerciseGoals },
     { path: "/progress", name: "progress", component: Progress },
     { path: "/profile", name: "athleteProfile", component: () => import("./views/AthleteProfile.vue") },
-    { path: "/catalog", name: "catalog", component: Catalog },
-    { 
-      path: "/lesson/:id", 
-      name: "lessonDetails", 
-      component: () => import("./views/LessonDetails.vue"), 
-      props: true 
-    },
-    {
-      path: "/lesson/:id_lesson/exercise/:id_exercise",
-      name: "exerciseDetails",
-      component: () => import("./views/ExerciseDetails.vue"),
-      props: true,
-    },
+    
 
   ],
 });

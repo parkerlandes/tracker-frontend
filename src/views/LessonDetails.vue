@@ -1,29 +1,20 @@
 <template>
   <v-app>
-    <!-- Always show Coach Navigation -->
     <CoachNav />
 
     <v-container class="mt-10">
-      <!-- Lesson Info -->
+      <!-- LESSON INFO -->
       <v-card v-if="lesson" class="pa-6 mb-8" elevation="3">
-          <h1></h1>
         <h2>{{ lesson.title }}</h2>
         <p class="text-medium-emphasis mb-4">{{ lesson.description }}</p>
       </v-card>
 
-      <!-- Add Exercise Form -->
-      <v-card class="pa-6 mb-8" elevation="2">
-        <h3 class="mb-4">Add New Exercise</h3>
-        <v-text-field v-model="newExercise.name" label="Name" outlined dense></v-text-field>
-        <v-textarea v-model="newExercise.description" label="Description" outlined dense auto-grow></v-textarea>
-        <v-text-field v-model="newExercise.reps" label="Reps" type="number" outlined dense></v-text-field>
-        <v-text-field v-model="newExercise.sets" label="Sets" type="number" outlined dense></v-text-field>
+      <!-- ADD EXERCISE BUTTON -->
+      <v-btn color="primary" class="mb-4" @click="showAddDialog = true">
+        Add New Exercise
+      </v-btn>
 
-        <v-btn color="primary" class="mt-2" block @click="addExercise">Add Exercise</v-btn>
-      </v-card>
-
-      <!-- Existing Exercises -->
-      <h3>Exercises</h3>
+      <!-- EXERCISES GRID -->
       <v-row v-if="exercises.length">
         <v-col
           v-for="exercise in exercises"
@@ -34,7 +25,7 @@
         >
           <v-card class="pa-4 mb-4" elevation="3">
             <h4>{{ exercise.name }}</h4>
-            <p class="text-medium-emphasis">{{ exercise.description }}</p>
+            <p>{{ exercise.description }}</p>
             <p><strong>Reps:</strong> {{ exercise.reps }}</p>
             <p><strong>Sets:</strong> {{ exercise.sets }}</p>
 
@@ -50,30 +41,52 @@
         </v-col>
       </v-row>
 
-      <v-alert v-else type="info" class="mt-6">No exercises found for this lesson.</v-alert>
+      <v-alert v-else type="info" class="mt-6">
+        No exercises found for this lesson.
+      </v-alert>
 
-      <!-- 🧩 Edit Dialog -->
-      <v-dialog v-model="editDialog" max-width="500px">
+      <!-- ADD EXERCISE DIALOG -->
+      <v-dialog v-model="showAddDialog" max-width="500">
         <v-card class="pa-6">
-          <h3 class="mb-4">Edit Exercise</h3>
-          <v-text-field v-model="editExercise.name" label="Name" outlined dense></v-text-field>
-          <v-textarea v-model="editExercise.description" label="Description" outlined dense auto-grow></v-textarea>
-          <v-text-field v-model="editExercise.reps" label="Reps" type="number" outlined dense></v-text-field>
-          <v-text-field v-model="editExercise.sets" label="Sets" type="number" outlined dense></v-text-field>
+          <h3 class="mb-4">Add New Exercise</h3>
+          <v-text-field v-model="newExercise.name" label="Name" outlined dense />
+          <v-textarea v-model="newExercise.description" label="Description" outlined dense auto-grow />
+          <v-text-field v-model="newExercise.reps" label="Reps" type="number" outlined dense />
+          <v-text-field v-model="newExercise.sets" label="Sets" type="number" outlined dense />
 
-          <v-row class="mt-3">
+          <v-row class="mt-4">
             <v-col cols="6">
-              <v-btn color="grey" block @click="editDialog = false">Cancel</v-btn>
+              <v-btn block color="grey" @click="showAddDialog = false">Cancel</v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn color="primary" block @click="saveEdit">Save</v-btn>
+              <v-btn block color="primary" @click="addExercise">Save</v-btn>
             </v-col>
           </v-row>
         </v-card>
       </v-dialog>
 
-      <!-- 🗑️ Delete Confirmation Dialog -->
-      <v-dialog v-model="deleteDialog" max-width="400px">
+      <!-- EDIT DIALOG -->
+      <v-dialog v-model="editDialog" max-width="500">
+        <v-card class="pa-6">
+          <h3 class="mb-4">Edit Exercise</h3>
+          <v-text-field v-model="editExercise.name" label="Name" outlined dense />
+          <v-textarea v-model="editExercise.description" label="Description" outlined dense auto-grow />
+          <v-text-field v-model="editExercise.reps" label="Reps" type="number" outlined dense />
+          <v-text-field v-model="editExercise.sets" label="Sets" type="number" outlined dense />
+
+          <v-row class="mt-4">
+            <v-col cols="6">
+              <v-btn block color="grey" @click="editDialog = false">Cancel</v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn block color="primary" @click="saveEdit">Save</v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-dialog>
+
+      <!-- DELETE DIALOG -->
+      <v-dialog v-model="deleteDialog" max-width="400">
         <v-card class="pa-6 text-center">
           <v-icon color="error" size="48">mdi-alert-circle</v-icon>
           <h3 class="my-3">Delete Exercise</h3>
@@ -81,10 +94,10 @@
 
           <v-row class="mt-4">
             <v-col cols="6">
-              <v-btn color="grey" block @click="deleteDialog = false">Cancel</v-btn>
+              <v-btn block color="grey" @click="deleteDialog = false">Cancel</v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn color="error" block @click="confirmDelete">Delete</v-btn>
+              <v-btn block color="error" @click="confirmDelete">Delete</v-btn>
             </v-col>
           </v-row>
         </v-card>
@@ -96,45 +109,40 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
-import Utils from "../config/utils.js";
-import CoachNav from "../components/CoachNav.vue"; // ✅ include navigation
+import lessonServices from "../services/lessonServices.js";
+import exerciseServices from "../services/exerciseServices.js";
+import CoachNav from "../components/CoachNav.vue";
 
 const route = useRoute();
 const lesson = ref(null);
 const exercises = ref([]);
 const newExercise = ref({ name: "", description: "", reps: "", sets: "" });
 const editExercise = ref({});
+const showAddDialog = ref(false);
 const editDialog = ref(false);
 const deleteDialog = ref(false);
 const deleteExerciseTarget = ref(null);
-const API = "http://localhost:3129/tracker-t9";
 
 const loadLessonAndExercises = async () => {
   const id = route.params.id;
-  const user = Utils.getStore("user");
   try {
-    const lessonRes = await axios.get(`${API}/lessons/${id}`);
+    const [lessonRes, exercisesRes] = await Promise.all([
+      lessonServices.getLesson(id),
+      exerciseServices.getAll(id),
+    ]);
     lesson.value = lessonRes.data;
-
-    const exercisesRes = await axios.get(`${API}/lesson/${id}/exercises`, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
     exercises.value = exercisesRes.data;
   } catch (err) {
     console.error("Error loading lesson or exercises:", err);
   }
 };
 
-onMounted(loadLessonAndExercises);
-
+// ADD
 const addExercise = async () => {
   const id = route.params.id;
-  const user = Utils.getStore("user");
   try {
-    await axios.post(`${API}/lesson/${id}/exercises`, newExercise.value, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
+    await exerciseServices.addExercise(id, { ...newExercise.value });
+    showAddDialog.value = false;
     newExercise.value = { name: "", description: "", reps: "", sets: "" };
     await loadLessonAndExercises();
   } catch (err) {
@@ -142,18 +150,18 @@ const addExercise = async () => {
   }
 };
 
+// EDIT
 const openEditDialog = (exercise) => {
   editExercise.value = { ...exercise };
   editDialog.value = true;
 };
 
 const saveEdit = async () => {
-  const user = Utils.getStore("user");
   try {
-    await axios.put(
-      `${API}/lesson/${editExercise.value.id_lesson}/exercises/${editExercise.value.id_exercise}`,
-      editExercise.value,
-      { headers: { Authorization: `Bearer ${user.token}` } }
+    await exerciseServices.updateExercise(
+      editExercise.value.id_lesson,
+      editExercise.value.id_exercise,
+      { ...editExercise.value }
     );
     editDialog.value = false;
     await loadLessonAndExercises();
@@ -162,33 +170,28 @@ const saveEdit = async () => {
   }
 };
 
+// DELETE
 const openDeleteDialog = (exercise) => {
   deleteExerciseTarget.value = exercise;
   deleteDialog.value = true;
 };
 
 const confirmDelete = async () => {
-  const exercise = deleteExerciseTarget.value;
-  const user = Utils.getStore("user");
-
+  const e = deleteExerciseTarget.value;
   try {
-    await axios.delete(
-      `${API}/lesson/${exercise.id_lesson}/exercises/${exercise.id_exercise}`,
-      { headers: { Authorization: `Bearer ${user.token}` } }
-    );
+    await exerciseServices.deleteExercise(e.id_lesson, e.id_exercise);
     deleteDialog.value = false;
     await loadLessonAndExercises();
   } catch (err) {
     console.error("Error deleting exercise:", err);
   }
 };
+
+onMounted(loadLessonAndExercises);
 </script>
 
 <style scoped>
-.mb-8 {
-  margin-bottom: 2rem;
-}
-.mb-4 {
-  margin-bottom: 1.25rem;
+.mt-10 {
+  margin-top: 2.5rem;
 }
 </style>
