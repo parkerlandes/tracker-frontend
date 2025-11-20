@@ -51,7 +51,7 @@
 
 <script setup>
   import { ref, onMounted } from "vue";
-  import CatalogServices from "../services/CatalogServices.js";
+  import catalogServices from "../services/catalogServices.js";
   import CoachNav from "../components/CoachNav.vue";
   import { useRouter } from "vue-router";
 
@@ -62,7 +62,7 @@
 
   onMounted(async () => {
   try {
-      const res = await CatalogServices.getAll();
+      const res = await catalogServices.getAll();
       lessons.value = res.data;
   } catch (err) {
       console.error("Error fetching lessons:", err);

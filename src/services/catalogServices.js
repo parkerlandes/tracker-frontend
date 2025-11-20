@@ -31,3 +31,4 @@ export default {
     return apiClient.delete(`/lessons/${id}`);
   },
 };
+
