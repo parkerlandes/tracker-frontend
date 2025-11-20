@@ -5,13 +5,13 @@
 </template>
 
 <script>
-// import {
-//   Chart, LineController, LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend,
-// } from "chart.js";
-// import "chartjs-adapter-date-fns";
-// import { Line } from "vue-chartjs";
+import {
+  Chart, LineController, LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend,
+} from "chart.js";
+import "chartjs-adapter-date-fns";
+import { Line } from "vue-chartjs";
 
-//Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend);
+Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend);
 
 
 export default {
