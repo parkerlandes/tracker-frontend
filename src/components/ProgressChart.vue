@@ -16,7 +16,7 @@ Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale
 
 export default {
   name: "ProgressChart",
-  //components: { Line },
+  components: { Line },
   props: {
     title: { type: String, default: "Progress" },
     labels: { type: Array, required: true },          
