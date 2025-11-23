@@ -48,6 +48,21 @@ const apiClient = axios.create({
     // console.log(Utils.getStore("user"))
     return data;
   },
+
+  validateStatus: function (status) {
+        return status >= 200 && status < 300; 
+    },
+
+    transformResponse: axios.defaults.transformResponse.concat(
+        (data, headers, status) => {
+            // If the status is 204, return the data as null/undefined, 
+            // preventing JSON.parse from running on an empty string.
+            if (status === 204) {
+                return null;
+            }
+            return data;
+        }
+    )
 });
 
 export default apiClient;
