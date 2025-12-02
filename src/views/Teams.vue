@@ -86,3 +86,17 @@ export default {
     </v-container>
   </div>
 </template>
+
+<style scoped>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+td {
+  padding: 24px;
+  text-align: center;
+  border-bottom: 1px solid rgb(133, 133, 133);
+}
+</style>
