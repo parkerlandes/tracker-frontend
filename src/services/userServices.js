@@ -1,11 +1,11 @@
-import apiClient from "./services";
+import apiClient from "./services.js";
 
 export default {
-  getUser(id_user) {
-    return apiClient.get(`/users/${id_user}`);
+  getAllUsers() {
+    return apiClient.get("/users/athletes"); 
   },
-  updateUser(id_user, payload) {
-    return apiClient.put(`/users/${id_user}`, payload);
+
+  getUser(id) {
+    return apiClient.get(`/user/${id}`);
   },
 };
-
