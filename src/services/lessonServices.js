@@ -16,7 +16,7 @@ export default {
     return apiClient.post(`/lessons`, lessonData);
   },
 
-  // Get lessons for specific user
+  // Get lessons for a specific user
   getLessonsForUser(id_user) {
     return apiClient.get(`/lessons/userLesson/${id_user}`);
   },
