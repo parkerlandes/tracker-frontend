@@ -1,28 +1,33 @@
 import apiClient from "./services.js";
 
 export default {
-  getAll() {
-    return apiClient.get("/tutorials");
+  // Get all exercises for a specific lesson
+  getAll(id_lesson) {
+    return apiClient.get(`/lesson/${id_lesson}/exercises`);
   },
-  getAllForUser(userId) {
-    return apiClient.get("/tutorials/userTut/" + userId);
+
+  // Get one exercise by its lesson + exercise id
+  getExercise(id_lesson, id_exercise) {
+    return apiClient.get(`/lesson/${id_lesson}/exercises/${id_exercise}`);
   },
-  get(id) {
-    return apiClient.get(`/tutorials/${id}`);
+
+  // Create a new exercise in a specific lesson
+  addExercise(id_lesson, data) {
+    return apiClient.post(`/lesson/${id_lesson}/exercises`, data);
   },
-  create(data) {
-    return apiClient.post("/tutorials", data);
+
+  // Update an existing exercise
+  updateExercise(id_lesson, id_exercise, data) {
+    return apiClient.put(`/lesson/${id_lesson}/exercises/${id_exercise}`, data);
   },
-  update(id, data) {
-    return apiClient.put(`/tutorials/${id}`, data);
+
+  // Delete an exercise
+  deleteExercise(id_lesson, id_exercise) {
+    return apiClient.delete(`/lesson/${id_lesson}/exercises/${id_exercise}`);
   },
-  delete(id) {
-    return apiClient.delete(`/tutorials/${id}`);
-  },
-  deleteAll() {
-    return apiClient.delete(`/tutorials`);
-  },
-  findByTitle(title) {
-    return apiClient.get(`/tutorials?title=${title}`);
+
+  // Get all published exercises (if needed)
+  getPublished(id_lesson) {
+    return apiClient.get(`/lesson/${id_lesson}/exercises/published`);
   },
 };

@@ -5,8 +5,8 @@
           <!-- Left: App title -->
           <v-col cols="auto">
           <v-btn variant="text" class="text-white text-h6" @click="goHome">
-            <v-avatar size="32" class="mr-2" v-if="user?.picture">
-             <img :src="user.picture" alt="Profile" />
+            <v-avatar size="32" class="mr-2" v-if="user.picture">
+             <img :src="user.picture" />
             </v-avatar>
             <v-icon left v-else>mdi-dumbbell</v-icon>
             Fitness - Tracker
@@ -47,7 +47,7 @@
         navItems: [
           { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
-          { title: "Workout", icon: "mdi-dumbbell", route: "/catalog" },
+          { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
           { title: "Goals", icon: "mdi-target", route: "/goals" },
           { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
@@ -71,4 +71,5 @@
     },
   };
   </script>
+  
   

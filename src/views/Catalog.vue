@@ -170,7 +170,13 @@ export default {
       />
       
       <v-row v-else>
-        <v-col cols="12" sm="6" md="4" v-for="lesson in lessons" :key="lesson.id_lesson">
+        <v-col
+          cols="12"
+          sm="6"
+          md="4"
+          v-for="lesson in lessons"
+          :key="lesson.id_lesson"
+        >
           <v-card class="pa-6 text-center hoverable" elevation="4">
             <v-icon size="48" color="primary">mdi-book-open-page-variant</v-icon>
             <h3 class="mt-3">{{ lesson.title }}</h3>
@@ -184,7 +190,10 @@ export default {
           </v-card>
         </v-col>
       </v-row>
-      <v-alert v-if="error" type="error" class="mt-4">{{ error }}</v-alert>
+
+      <v-alert v-if="error" type="error" class="mt-4">
+        {{ error }}
+      </v-alert>
     </v-container>
 
     <v-dialog v-model="showLessonModal" max-width="600">
