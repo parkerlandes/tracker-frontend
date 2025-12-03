@@ -1,5 +1,5 @@
 <script>
-import AthleteNav from "../components/AthleteNav.vue";
+import AthleteNav from "../components/CoachNav.vue";
 import userService from "../services/userServices.js"; 
 import exerciseGoalsService from "../services/exerciseGoalsServices.js"; 
 

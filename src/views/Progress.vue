@@ -1,5 +1,5 @@
 <script>
-import AthleteNav from "../components/AthleteNav.vue";
+import AthleteNav from "../components/CoachNav.vue";
 import ProgressChart from "../components/ProgressChart.vue";
 import ProgressServices from "../services/progressServices.js";
 import Utils from "../config/utils.js";
