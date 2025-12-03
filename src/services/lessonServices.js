@@ -6,5 +6,8 @@ export default {
   },
   getLesson(id) {
     return apiClient.get(`/lessons/${id}`);
+  }, 
+  createLesson(lessonData) {
+    return apiClient.post(`/lessons`, lessonData); 
   },
 };
