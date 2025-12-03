@@ -4,9 +4,12 @@
       <v-row align="center" justify="space-between">
         <v-col cols="auto">
           <v-btn variant="text" class="text-white text-h6" @click="goHome">
-            <v-avatar size="32" class="mr-2" v-if="user?.picture">
-             <img :src="user.picture" alt="Profile" />
-            </v-avatar>
+            <v-avatar
+              v-if="user?.picture"
+              size="32"
+              class="mr-2"
+              :image="user.picture"
+            />
             <v-icon left v-else>mdi-dumbbell</v-icon>
             Fitness - Tracker
           </v-btn>
@@ -25,6 +28,7 @@
             {{ item.title }}
           </v-btn>
 
+          
           <v-btn icon color="white" @click="logout">
             <v-icon>mdi-logout</v-icon>
           </v-btn>
@@ -37,10 +41,10 @@
 <script>
 import Utils from "../config/utils";
 
-export default {
-  name: "CoachNav",
-  data() {
-    const user = Utils.getStore("user");
+  export default {
+    name: "CoachNav",
+    data() {
+    const user = Utils.getStore("user") || {};
     return { 
       user,
       navItems: [

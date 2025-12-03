@@ -24,6 +24,7 @@
     </v-app>
   </template>
   
+  
   <script>
   import CoachNav from "../components/CoachNav.vue";
   import Utils from "../config/utils";

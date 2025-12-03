@@ -57,53 +57,51 @@
   </template>
   
   <script setup>
-    import { ref, onMounted } from "vue";
-    import axios from "axios";
-    import Utils from "../config/utils.js";
-    import AthleteNav from "../components/AthleteNav.vue";
+  import { ref, onMounted } from "vue";
+  import Utils from "../config/utils.js";
+  import AthleteNav from "../components/AthleteNav.vue";
+  import UserServices from "../services/userServices.js";
 
-    const profile = ref({
+  const profile = ref({
     fName: "",
     lName: "",
     email: "",
-    });
-    const message = ref("");
-    const API = "http://localhost:3100/tracker-t9";
+  });
+  const message = ref("");
 
-    onMounted(async () => {
+  onMounted(async () => {
     const storedUser = Utils.getStore("user");
 
     if (!storedUser) {
-        console.warn("No user found in local storage");
-        return;
+      console.warn("No user found in local storage");
+      return;
     }
 
     // Use local data first to show instantly
     profile.value = { ...storedUser };
 
     try {
-        // Then fetch fresh copy from DB in case of updates
-        const res = await axios.get(`${API}/user/${storedUser.id_user}`);
-        if (res.data) profile.value = res.data;
+      // Then fetch fresh copy from DB in case of updates
+      const res = await UserServices.getUser(storedUser.id_user);
+      if (res.data) profile.value = { ...storedUser, ...res.data };
     } catch (err) {
-        console.error("Error loading profile:", err);
+      console.error("Error loading profile:", err);
     }
-    });
+  });
 
-    const saveProfile = async () => {
-    const user = Utils.getStore("user");
+  const saveProfile = async () => {
+    const storedUser = Utils.getStore("user");
+    if (!storedUser?.id_user) return;
     try {
-        await axios.put(`${API}/user/${user.id_user}`, profile.value);
-        message.value = "Profile updated successfully!";
+      await UserServices.updateUser(storedUser.id_user, profile.value);
+      message.value = "Profile updated successfully!";
 
-        // Update stored user for other pages
-        Utils.setStore("user", profile.value);
+      // Merge to keep properties not on the form (picture, token, role, etc.)
+      Utils.setStore("user", { ...storedUser, ...profile.value });
     } catch (err) {
-        console.error("Error updating profile:", err);
-        message.value = "Update failed";
+      console.error("Error updating profile:", err);
+      message.value = "Update failed";
     }
-    };
+  };
+  
 </script>
-
-  
-  

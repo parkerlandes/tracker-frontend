@@ -68,6 +68,21 @@ export default {
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Iterate over the data array -->
+          <tr v-for="team in teams" :key="team.id_team">
+            <td>{{ team.name }}</td>
+            <td>{{ team.description }}</td>
+          </tr>
+        </tbody>
+      </table>
     </v-container>
   </div>
 </template>
