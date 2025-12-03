@@ -1,8 +1,21 @@
 <script>
+import { ref } from "vue";
 import AthleteNav from "../components/AthleteNav.vue";
 import CoachNav from "../components/CoachNav.vue";
 import Utils from "../config/utils.js";
 import TeamServices from "../services/teamServices.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+// const user = ref(Utils.getStore("user"));
+// const teams = ref([]);
+// const loading = ref(false);
+// const error = ref(null);
+
+// const goToTeam = (id_team) => {
+//   Utils.navigate(router, `/teams/${id_team}`);
+// };
 
 export default {
   name: "Teams",
@@ -19,7 +32,7 @@ export default {
   },
   computed: {
     isCoach() {
-      return this.role === "coach";
+      return this.user?.role === "coach";
     },
   },
   mounted() {
@@ -73,6 +86,7 @@ export default {
           <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Button</th>
           </tr>
         </thead>
         <tbody>
@@ -80,9 +94,28 @@ export default {
           <tr v-for="team in teams" :key="team.id_team">
             <td>{{ team.name }}</td>
             <td>{{ team.description }}</td>
+            <td>
+              <v-btn color="primary" @click="$router.push(`/teams/${team.id_team}`)">
+                View Details
+              </v-btn>
+            </td>
           </tr>
         </tbody>
       </table>
     </v-container>
   </div>
 </template>
+
+<style scoped>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+td {
+  padding: 24px;
+  text-align: center;
+  border-bottom: 1px solid rgb(133, 133, 133);
+}
+</style>

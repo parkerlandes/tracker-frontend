@@ -6,6 +6,6 @@ export default {
   },
 
   getUser(id) {
-    return apiClient.get(`/user/${id}`);
+    return apiClient.get(`/users/${id}`);
   },
 };

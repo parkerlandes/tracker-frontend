@@ -10,7 +10,7 @@ export default {
   },
 
   getAllExercises() {
-    return apiClient.get(`/lesson`); 
+    return apiClient.get(`/lessons`); 
   },
 
   updateGoal(id, goalData) {
@@ -20,4 +20,4 @@ export default {
   deleteGoal(id) {
     return apiClient.delete(`/player-goals/${id}`); 
   },
-};
+};  

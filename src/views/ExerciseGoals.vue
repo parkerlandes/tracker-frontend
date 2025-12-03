@@ -1,14 +1,19 @@
 <script>
-import AthleteNav from "../components/CoachNav.vue";
-import userService from "../services/userServices.js"; 
+import Utils from "../config/utils.js";
+import CoachNav from "../components/CoachNav.vue";
+import AthleteNav from "../components/AthleteNav.vue";
+import userServices from "../services/userServices.js";
 import exerciseGoalsService from "../services/exerciseGoalsServices.js"; 
 
 export default {
   name: "ExerciseGoals",
-  components: { AthleteNav },
+  components: { AthleteNav, CoachNav },
 
   data() {
     return {
+      isCoach: false,
+      currentUserId: null,
+
       selectedAthlete: null, // Stores the 'id' of the selected athlete
       athletes: [],          // Populated by fetchAthletes()
       goals: [],             // Stores the goals for the selected athlete
@@ -44,9 +49,32 @@ export default {
   },
 
   methods: {
+    fetchCurrentUser() { 
+      setTimeout(() => {
+        const userStore = Utils.getStore("user"); 
+        
+        if (!userStore || !userStore.id_user) { 
+          console.error("User data not found in store after delay. Check login status.");
+          return;
+        }
+
+        const user = userStore;
+        
+        this.currentUserId = user.id_user; 
+        this.isCoach = user.role === 'coach'; 
+        
+        if (!this.isCoach) {
+          this.selectedAthlete = this.currentUserId;
+          this.fetchGoalsForSelected(); 
+        } else {
+          this.fetchAthletes();
+        }
+      }, 50); 
+    },
+
     async fetchAthletes() {
       try {
-        const res = await userService.getAllUsers();
+        const res = await userServices.getAllUsers();
 
         this.athletes = res.data.map(user => ({
           id: user.id_user,
@@ -93,35 +121,34 @@ export default {
       }
     },
 
+
     async saveNewGoal() {
-        if (!this.selectedAthlete) {
-            console.error("Cannot save goal: No athlete selected.");
-            return;
-        }
+      if (!this.selectedAthlete) {
+        console.error("Cannot save goal: No athlete selected.");
+        return;
+      }
 
-        const goalToSave = {
-            ...this.newGoal,
-            id_user: this.selectedAthlete
+      const goalToSave = {
+        ...this.newGoal,
+        id_user: this.selectedAthlete
+      };
+
+      try {
+        await exerciseGoalsService.createGoal(goalToSave);
+        await this.fetchGoalsForSelected();
+  
+        this.dialogNew = false;
+        this.newGoal = {
+          title: "",
+          description: "",
+          category: "",
+          target: "",
+          deadline: "",
+          status: "",
         };
-
-        try {
-            await exerciseGoalsService.createGoal(goalToSave);
-            
-            await this.fetchGoalsForSelected();
-
-            this.dialogNew = false;
-            this.newGoal = {
-                title: "",
-                description: "",
-                category: "",
-                target: "",
-                deadline: "",
-                status: "",
-            };
-            
-        } catch (err) {
-            console.error("Error creating new goal:", err);
-        }
+      } catch (err) {
+        console.error("Error creating new goal:", err);
+      }
     },
 
     async saveEditedGoal() {
@@ -182,19 +209,25 @@ export default {
   },
 
   mounted() {
-    this.fetchAthletes();
-    this.fetchExercises();
+    this.$nextTick(() => { 
+      this.fetchCurrentUser();
+      this.fetchExercises();
+    });
   },
 };
 </script>
 
 <template>
-  <AthleteNav />
+  <CoachNav v-if="isCoach" />
+  <AthleteNav v-else />
 
   <v-container class="pa-6" style="max-width: 900px;">
     <h1 class="text-h4 font-weight-bold mb-6">Coach Goals</h1>
 
-    <v-card class="pa-4 mb-8 rounded-xl elevation-3">
+    <h1 class="text-h4 font-weight-bold mb-6" v-if="isCoach">Coach Goals</h1>
+    <h1 class="text-h4 font-weight-bold mb-6" v-else>My Goals</h1>
+
+    <v-card class="pa-4 mb-8 rounded-xl elevation-3" v-if="isCoach">
       <h2 class="text-h6 mb-4">Select Athlete</h2>
 
       <div class="d-flex align-center" style="gap: 12px;">
@@ -207,26 +240,31 @@ export default {
           variant="outlined"
           class="rounded-lg"
           style="flex: 1"
-          >
-        </v-select>
+        ></v-select>
 
         <v-btn 
           color="primary" 
-          class="rounded-xl"
-          height="56"
-          @click="fetchGoalsForSelected"
+          class="rounded-lg" 
           :disabled="!selectedAthlete"
-          >
+          @click="fetchGoalsForSelected"
+        >
           Go
         </v-btn>
       </div>
     </v-card>
+    
+    <div v-if="!isCoach && goals.length === 0">
+      <v-alert type="info" variant="tonal">
+        You currently have no goals assigned.
+      </v-alert>
+    </div>
 
     <div v-if="selectedAthlete && goals.length > 0">
       <div class="d-flex justify-space-between align-center mb-4">
         <h2 class="text-h5 font-weight-bold">Goals</h2>
 
         <v-btn 
+          v-if="isCoach"
           color="primary" 
           class="rounded-xl" 
           @click="dialogNew = true"
@@ -235,6 +273,7 @@ export default {
           Add Goal
         </v-btn>
       </div>
+
       <v-row dense>
         <v-col cols="12" v-for="goal in goals" :key="goal.id">
           <v-card class="pa-4 rounded-xl elevation-2">
@@ -249,12 +288,14 @@ export default {
               </div>
 
               <div class="d-flex align-center">
-                <v-btn icon class="mr-2" @click="openEdit(goal)">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn icon color="red" @click.stop="openDeleteConfirmation(goal)">
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
+                <template v-if="isCoach">
+                  <v-btn icon class="mr-2" @click="openEdit(goal)">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-btn icon color="red" @click.stop="openDeleteConfirmation(goal)">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
               </div>
             </div>
           </v-card>
