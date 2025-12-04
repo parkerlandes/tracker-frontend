@@ -1,50 +1,61 @@
 <template>
-    <v-container class="pa-8">
-      <h1 class="text-h5 font-weight-bold mb-6">Add New Athlete</h1>
+    <v-app>
   
-      <v-form v-model="valid" ref="form">
+      <CoachNav />   
+      <div style="height:64px;"></div> <!-- spacer for nav -->
   
-        <v-text-field
-          v-model="athlete.fName"
-          label="First Name"
-          required
-        ></v-text-field>
-  
-        <v-text-field
-          v-model="athlete.lName"
-          label="Last Name"
-          required
-        ></v-text-field>
-  
-        <v-text-field
-          v-model="athlete.email"
-          label="Email"
-          type="email"
-        ></v-text-field>
+      <v-container class="pa-8">
+        <h1 class="text-h5 font-weight-bold mb-6">Add New Athlete</h1>
+    
+        <v-form v-model="valid" ref="form">
+    
+            <v-text-field
+            v-model="athlete.fName"
+            label="First Name"
+            required
+            ></v-text-field>
+    
+            <v-text-field
+            v-model="athlete.lName"
+            label="Last Name"
+            required
+            ></v-text-field>
+    
+            <v-text-field
+            v-model="athlete.email"
+            label="Email"
+            type="email"
+            ></v-text-field>
 
-        <v-select
-            v-model="athlete.id_team"
-            :items="teams"
-            item-title="name"
-            item-value="id_team"
-            label="Assign to Team"
-            clearable
-        />
-  
-        <v-btn color="primary" class="mt-6" @click="submitAthlete">
-          Save Athlete
-        </v-btn>
-  
-      </v-form>
-    </v-container>
+            <v-select
+                v-model="athlete.id_team"
+                :items="teams"
+                item-title="name"
+                item-value="id_team"
+                label="Assign to Team"
+                clearable
+            />
+    
+            <v-btn color="primary" class="mt-6" @click="submitAthlete">
+            Save Athlete
+            </v-btn>
+    
+        </v-form>
+        </v-container>
+    </v-app>
   </template>
   
   
   <script>
 import athleteServices from "../services/athleteServices.js";
 import teamServices from "../services/teamServices.js";
+import CoachNav from "../components/CoachNav.vue";
 
 export default {
+    components: {
+        CoachNav,
+        },
+
   name: "AddAthlete",
 
   data() {
