@@ -109,18 +109,20 @@ const router = createRouter({
     // ATHLETE DASHBOARD
     { path: "/athlete", component: AthleteDashboard },
 
-    // ATHLETE — WORKOUT VIEWS
-    { path: "/athlete/workouts", component: AthleteLessons },
-    { path: "/athlete/workout/:id_lesson", component: AthleteWorkout, props: true },
-
     // ATHLETE PROFILE
-    { path: "/athlete/profile", component: AthleteProfile },
+    { path: "/profile", component: AthleteProfile },
 
-    //Athlete Teams 
-    //{ path: "/athlete/teams", component: Teams}
+    // ATHLETE TEAMS
+    { 
+      path: "/teams",
+      name: "athleteTeams",
+      component: () => import("./views/AthleteTeams.vue"),
+    },
 
-    { path: "/athlete/progress", component: Progress },
+    // ATHLETE — WORKOUT VIEWS
+    { path: "/workout", component: AthleteLessons },
 
+    
   ],
 });
 
