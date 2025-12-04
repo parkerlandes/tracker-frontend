@@ -1,6 +1,7 @@
 <script>
 import Utils from "../config/utils.js";
 import CoachNav from "../components/CoachNav.vue";
+import AthleteNav from "../components/AthleteNav.vue";
 import LessonServices from "../services/lessonServices.js";
 import MuscleGroupServices from "../services/muscleGroupsServices.js";
 import UserServices from "../services/userServices.js";
@@ -10,7 +11,7 @@ import userLessonServices from "../services/userLessonServices.js";
 
 export default {
   name: "LessonCatalog", 
-  components: { CoachNav },
+  components: { CoachNav, AthleteNav },
 
   data() {
     const user = Utils.getStore("user");
@@ -217,6 +218,7 @@ export default {
         title: this.newLesson.title,
         description: this.newLesson.description,
         id_muscle_group: this.newLesson.id_muscle_group,
+        id_user: this.user?.id_user || null,
         assignedUsers: this.newLesson.assignedUsers,
       };
 
