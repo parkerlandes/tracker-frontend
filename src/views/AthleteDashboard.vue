@@ -99,6 +99,7 @@ import Utils from "../config/utils.js";
 import progressServices from "../services/progressServices";
 import GoalServices from "../services/goalServices";
 import GoalProgressServices from "../services/playerGoalProgressServices";
+import UserServices from "../services/userServices.js";
 
 const services = {
   progress: progressServices,
@@ -224,6 +225,21 @@ const go = (route) => {
 };
 
 onMounted(() => {
+  // Refresh user to pick up profile edits (bio, etc.)
+  (async () => {
+    const storedUser = Utils.getStore("user");
+    if (!storedUser?.id_user) return;
+    try {
+      const res = await UserServices.getUser(storedUser.id_user);
+      if (res?.data) {
+        user.value = { ...storedUser, ...res.data };
+        Utils.setStore("user", user.value);
+      }
+    } catch (err) {
+      console.error("Failed to refresh user profile", err);
+    }
+  })();
+
   fetchMetrics();
   fetchGoals();
 });

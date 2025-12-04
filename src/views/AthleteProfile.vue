@@ -147,10 +147,13 @@ const profile = ref({
     if (!storedUser?.id_user) return;
     try {
       await UserServices.updateUser(storedUser.id_user, profile.value);
-      message.value = "Profile updated successfully!";
+      // Pull fresh copy from API to keep in sync
+      const { data: refreshed } = await UserServices.getUser(storedUser.id_user);
+      const mergedUser = { ...storedUser, ...profile.value, ...refreshed };
 
-      // Merge to keep properties not on the form (picture, token, role, etc.)
-      Utils.setStore("user", { ...storedUser, ...profile.value });
+      profile.value = { ...profile.value, ...refreshed };
+      Utils.setStore("user", mergedUser);
+      message.value = "Profile updated successfully!";
     } catch (err) {
       console.error("Error updating profile:", err);
       message.value = "Update failed";
