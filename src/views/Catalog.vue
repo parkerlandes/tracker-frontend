@@ -42,7 +42,10 @@ export default {
 
         this.lessons = res.data.map(lesson => ({
           id_lesson: lesson.id_lesson,
-          title: `${lesson.title}`
+          title: lesson.title,
+          description: lesson.description,
+          muscleGroup: lesson.id_muscle_group,
+          assignedUser: lesson.id_user
         }));
       } catch (err) {
         console.error("Error fetching lessons:", err);
@@ -81,8 +84,8 @@ export default {
       }
     }, 
 
-    goToLesson(id) {
-      this.$router.push(`/lesson/${id}`);
+    goToLesson(id_lesson) {
+      this.$router.push({ name: "lessonDetails", params: { id_lesson } });
     },
     
     resetForm() {
@@ -181,6 +184,30 @@ export default {
             <v-icon size="48" color="primary">mdi-book-open-page-variant</v-icon>
             <h3 class="mt-3">{{ lesson.title }}</h3>
             <p class="text-medium-emphasis">{{ lesson.description }}</p>
+
+            <div class="mt-2">
+
+              <!-- Assigned Athlete -->
+              <v-chip 
+                v-if="lesson.assignedUser"
+                color="blue"
+                small
+                class="mr-1"
+              >
+                Athlete Assigned
+              </v-chip>
+
+              <!-- Muscle group -->
+              <v-chip
+                v-if="lesson.muscleGroup"
+                color="green"
+                small
+                class="mr-1"
+              >
+                {{ muscleGroups.find(m => m.id_muscle_group === lesson.muscleGroup)?.muscle }}
+              </v-chip>
+
+            </div>
             <v-chip v-if="lesson.difficulty" color="secondary" label>
               {{ lesson.difficulty }}
             </v-chip> 

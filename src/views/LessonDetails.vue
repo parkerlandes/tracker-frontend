@@ -2,6 +2,8 @@
   <v-app>
     <CoachNav />
 
+    <h1 class="text-h5 font-weight-bold mb-6"></h1>
+
     <v-container class="mt-10">
       <!-- LESSON INFO -->
       <v-card v-if="lesson" class="pa-6 mb-8" elevation="3">
@@ -124,12 +126,14 @@ const deleteDialog = ref(false);
 const deleteExerciseTarget = ref(null);
 
 const loadLessonAndExercises = async () => {
-  const id = route.params.id;
+  const id_lesson = route.params.id_lesson;
+
   try {
     const [lessonRes, exercisesRes] = await Promise.all([
-      lessonServices.getLesson(id),
-      exerciseServices.getAll(id),
+      lessonServices.getLesson(id_lesson),
+      exerciseServices.getAll(id_lesson),
     ]);
+
     lesson.value = lessonRes.data;
     exercises.value = exercisesRes.data;
   } catch (err) {
@@ -139,9 +143,16 @@ const loadLessonAndExercises = async () => {
 
 // ADD
 const addExercise = async () => {
-  const id = route.params.id;
+  const id_lesson = route.params.id_lesson;
+
+  console.log("Adding exercise to lesson:", id_lesson);
+
   try {
-    await exerciseServices.addExercise(id, { ...newExercise.value });
+    await exerciseServices.addExercise(id_lesson, {
+      ...newExercise.value,
+      id_lesson
+    });
+
     showAddDialog.value = false;
     newExercise.value = { name: "", description: "", reps: "", sets: "" };
     await loadLessonAndExercises();
@@ -149,6 +160,7 @@ const addExercise = async () => {
     console.error("Error adding exercise:", err);
   }
 };
+
 
 // EDIT
 const openEditDialog = (exercise) => {

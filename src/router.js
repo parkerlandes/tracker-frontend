@@ -7,30 +7,35 @@ import GoogleAuth from "./views/GoogleAuth.vue";
 import CoachDashboard from "./views/CoachDashboard.vue";
 import AthleteDashboard from "./views/AthleteDashboard.vue";
 
-// Exercises
+// ATHLETES
+import ViewAthletes from "./views/ViewAthletes.vue";
+import AddAthlete from "./views/AddAthlete.vue";
+import AthleteProfile from "./views/AthleteProfile.vue";
+
+// EXERCISES
 import ExerciseList from "./views/ExerciseList.vue";
 import AddExercise from "./views/AddExercise.vue";
 import EditExercise from "./views/EditExercise.vue";
 import ViewExercise from "./views/ViewExercise.vue";
 import ExerciseDetails from "./views/ExerciseDetails.vue"
 
-// Plans & Goals
+// PLANS & LESSONS
 import AddExercisePlan from "./views/AddExercisePlan.vue";
 import EditExercisePlan from "./views/EditExercisePlan.vue";
-import ExerciseGoals from "./views/ExerciseGoals.vue";
-import Progress from "./views/Progress.vue";
 import Catalog from "./views/Catalog.vue";
-import TeamDetails from "./views/TeamDetails.vue";
-
-//Teams views - Player & coach 
-import Teams from "./views/Teams.vue"
-
-import ViewAthletes from "./views/ViewAthletes.vue";
-import AthleteLessons from "./views/AthleteLessons.vue";
-import AthleteWorkout from "./views/AthleteWorkout.vue";
 import LessonDetails from "./views/LessonDetails.vue";
 
+// GOALS
+import ExerciseGoals from "./views/ExerciseGoals.vue";
+import Progress from "./views/Progress.vue";
 
+// TEAMS
+import Teams from "./views/Teams.vue";
+import TeamDetails from "./views/TeamDetails.vue";
+
+// ATHLETE WORKOUT
+import AthleteLessons from "./views/AthleteLessons.vue";
+import AthleteWorkout from "./views/AthleteWorkout.vue";
 
 import Utils from "./config/utils";
 
@@ -38,49 +43,84 @@ import Utils from "./config/utils";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    //Startup
-    { path: "/", redirect: "/start" },
-    { path: "/start", name: "start", component: LoginStart },
-    { path: "/select-role", name: "selectRole", component: SelectRole },
-    { path: "/google-auth", name: "googleAuth", component: GoogleAuth },
 
-    //Coach Routes
-    { path: "/coach", name: "coachDashboard", component: CoachDashboard },
-    { path: "/athletes", name: "viewAthletes", component: ViewAthletes },
-    { path: "/catalog", name: "catalog", component: Catalog },
+    // STARTUP
+    { path: "/", redirect: "/start" },
+    { path: "/start", component: LoginStart },
+    { path: "/select-role", component: SelectRole },
+    { path: "/google-auth", component: GoogleAuth },
+
+    // COACH DASHBOARD
+    { path: "/coach", component: CoachDashboard },
+
+    // COACH — ATHLETE MGMT
+    { path: "/coach/athletes", component: ViewAthletes },
+    { path: "/coach/athlete/add", component: AddAthlete },
+    { path: "/coach/athlete/:id", component: AthleteProfile, props: true },
     { 
-      path: "/lesson/:id", name: "lessonDetails", component: LessonDetails, props: true 
+      path: "/coach/teams",
+      name: "coachTeams",
+      component: () => import("./views/Teams.vue"),
+    },
+
+    // COACH — EXERCISES
+    { path: "/coach/exercises", component: ExerciseList },
+    { 
+      path: "/coach/lesson/:id_lesson/exercise/add",
+      component: AddExercise,
+      props: true 
+    },
+    { path: "/coach/exercise/edit/:id", component: EditExercise, props: true },
+    { path: "/coach/exercise/:id", component: ViewExercise, props: true },
+    {
+      path: "/coach/exercises",
+      name: "allExercises",
+      component: () => import("./views/AllExercises.vue"),
+    },
+
+    // COACH — EXERCISE PLANS
+    { path: "/coach/plans", component: Catalog },
+    { path: "/coach/plans/add", component: AddExercisePlan },
+    { path: "/coach/plans/edit/:id", component: EditExercisePlan, props: true },
+
+    // COACH — GOALS & PROGRESS
+    { path: "/coach/goals", component: ExerciseGoals },
+    { path: "/coach/progress", component: Progress },
+
+    // COACH — LESSON DETAILS
+    { 
+      path: "/coach/lesson/:id_lesson",
+      name: "lessonDetails",
+      component: LessonDetails,
+      props: true 
     },
     {
-      path: "/lesson/:id_lesson/exercise/:id_exercise", name: "exerciseDetails", component: ExerciseDetails, props: true,
+      path: "/coach/lesson/:id_lesson/exercise/:id_exercise",
+      component: ExerciseDetails,
+      props: true
     },
-
-    //Athlete Routes
-    { path: "/athlete", name: "athleteDashboard", component: AthleteDashboard },
-    { path: "/teams", name: "teams", component: Teams},
-    { path: "/teams/:id", name: "teamDetails", component: TeamDetails, props: true},
-    { path: "/workout", name: "workout", component: AthleteLessons, props: true},
-    { path: "/workout/:id_lesson", name: "athleteWorkout", component: AthleteWorkout, props: true},
-
-    //Ambigous - Coach's & Players can view it
-    { path: "/exercises", name: "exerciseList", component: ExerciseList },
-    { path: "/exercise/add", name: "addExercise", component: AddExercise },
-    { path: "/exercise/edit/:id", name: "editExercise", component: EditExercise, props: true },
-    { path: "/exercise/:id", name: "viewExercise", component: ViewExercise, props: true },
-    { path: "/plans/add", name: "addExercisePlan", component: AddExercisePlan },
-    { path: "/plans/edit/:id", name: "editExercisePlan", component: EditExercisePlan, props: true },
-    { path: "/goals", name: "goals", component: ExerciseGoals },
-    { path: "/progress", name: "progress", component: Progress },
-    { path: "/profile", name: "athleteProfile", component: () => import("./views/AthleteProfile.vue") },
+    
     
 
+    // COACH — TEAMS
+    { path: "/coach/teams", component: Teams },
+    { path: "/coach/teams/:id", component: TeamDetails, props: true },
+
+    // ATHLETE DASHBOARD
+    { path: "/athlete", component: AthleteDashboard },
+
+    // ATHLETE — WORKOUT VIEWS
+    { path: "/athlete/workouts", component: AthleteLessons },
+    { path: "/athlete/workout/:id_lesson", component: AthleteWorkout, props: true },
+
+    // ATHLETE PROFILE
+    { path: "/athlete/profile", component: AthleteProfile },
   ],
 });
 
+// navigation guard can be enhanced later with RBAC
 router.beforeEach((to, from, next) => {
-  next(); // Always allow navigation
+  next();
 });
 
-
 export default router;
-

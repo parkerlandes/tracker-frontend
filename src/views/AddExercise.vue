@@ -1,84 +1,92 @@
+<template>
+  <v-app>
+    <CoachNav />
+
+    <v-container class="mt-10">
+      <v-card class="pa-6" elevation="3">
+        <h2 class="mb-4">Add Exercise to Lesson</h2>
+
+        <v-form v-model="valid">
+          <v-text-field
+            v-model="exercise.name"
+            label="Exercise Name"
+            required
+          />
+          <v-textarea
+            v-model="exercise.description"
+            label="Description"
+            auto-grow
+            required
+          />
+
+          <v-text-field
+            v-model="exercise.reps"
+            label="Reps"
+            type="number"
+          />
+
+          <v-text-field
+            v-model="exercise.sets"
+            label="Sets"
+            type="number"
+          />
+
+          <v-row class="mt-4">
+            <v-col cols="6">
+              <v-btn block color="grey" @click="cancel">Cancel</v-btn>
+            </v-col>
+
+            <v-col cols="6">
+              <v-btn
+                block
+                color="primary"
+                :disabled="!exercise.name || !exercise.description"
+                @click="saveExercise"
+              >
+                Save Exercise
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+
+      </v-card>
+    </v-container>
+  </v-app>
+</template>
+
+
 <script setup>
-import { ref, onMounted } from "vue";
-import TutorialServices from "../services/exercisePlanServices";
-import Utils from "../config/utils.js";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import exerciseServices from "../services/exerciseServices.js";
+import CoachNav from "../components/CoachNav.vue";
 
 const router = useRouter();
-const valid = ref(false);
-const user = Utils.getStore("user");
-const tutorial = ref({
-  id: null,
-  title: "",
-  description: "",
-  published: false,
-});
-const message = ref("Enter data and click save");
+const route = useRoute();
 
-const saveTutorial = () => {
-  const data = {
-    title: tutorial.value.title,
-    description: tutorial.value.description,
-    published: true,
-    userId: user.userId,
-  };
-  TutorialServices.create(data)
-    .then((response) => {
-      tutorial.value.id = response.data.id;
-      console.log("add " + response.data);
-      router.push({ name: "tutorials" });
-    })
-    .catch((e) => {
-      message.value = e.response.data.message;
-    });
+const valid = ref(false);
+
+const exercise = ref({
+  name: "",
+  description: "",
+  reps: "",
+  sets: "",
+});
+
+const saveExercise = async () => {
+  const id_lesson = route.params.id_lesson;
+
+  try {
+    await exerciseServices.addExercise(id_lesson, { ...exercise.value });
+
+    router.push(`/coach/lesson/${id_lesson}`);
+  } catch (err) {
+    console.error("Error creating exercise:", err);
+  }
 };
 
 const cancel = () => {
-  router.push({ name: "tutorials" });
+  const id_lesson = route.params.id_lesson;
+  router.push(`/coach/lesson/${id_lesson}`);
 };
-
-onMounted(() => {
-  user.value = Utils.getStore("user");
-});
 </script>
-
-<template>
-  <div>
-    <v-container>
-      <v-toolbar>
-        <v-toolbar-title>Tutorial Add</v-toolbar-title>
-      </v-toolbar>
-
-      <br />
-      <h4>{{ message }}</h4>
-      <br />
-      <v-form ref="form" v-model="valid" lazy validation>
-        <v-text-field
-          v-model="tutorial.title"
-          id="title"
-          :counter="50"
-          label="Title"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="tutorial.description"
-          id="description"
-          :counter="50"
-          label="Description"
-          required
-        ></v-text-field>
-
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="mr-4"
-          @click="saveTutorial"
-        >
-          Save
-        </v-btn>
-
-        <v-btn color="error" class="mr-4" @click="cancel">Cancel</v-btn>
-      </v-form>
-    </v-container>
-  </div>
-</template>
