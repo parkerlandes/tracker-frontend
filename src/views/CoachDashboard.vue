@@ -35,7 +35,7 @@
       <!-- FEATURE CARDS -->
       <v-row>
         <v-col cols="12" sm="6" md="4" v-for="card in cards" :key="card.title">
-          <v-card class="pa-6 hoverable" elevation="6" rounded="xl" @click="go(card.route)">
+          <v-card class="pa-6 hoverable" elevation="6" @click="go(card.route)">
             <v-row no-gutters>
               <v-col cols="3" class="d-flex align-center justify-center">
                 <v-icon size="48" color="primary">{{ card.icon }}</v-icon>
@@ -104,13 +104,7 @@ export default {
           description: "Add/Edit/Delete athlete goals"
         },
 
-        // RESULTS + PROGRESS
-        { 
-          title: "Progress",
-          icon: "mdi-chart-line",
-          route: "/analytics",
-          description: "View athlete progress trends"
-        },
+      
       ],
 
       
