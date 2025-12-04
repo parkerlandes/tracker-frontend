@@ -41,6 +41,19 @@ export default class Utils {
     return Math.round(kg * 2.20462);
   };
 
+  // convert centimeters to feet/inches
+  static cmToFeetInches = (cm) => {
+    if (cm === null || cm === undefined) return null;
+    const totalInches = cm / 2.54;
+    let feet = Math.floor(totalInches / 12);
+    let inches = Math.round(totalInches - feet * 12);
+    if (inches === 12) {
+      feet += 1;
+      inches = 0;
+    }
+    return { feet, inches };
+  };
+
   // clamp percent values between 0 and 100
   static clampPercent = (val) => Math.min(100, Math.max(0, Math.round(val)));
 

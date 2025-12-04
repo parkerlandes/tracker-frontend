@@ -137,7 +137,10 @@ const latestMetric = computed(() => {
 
 const heightDisplay = computed(() => {
   const height = latestMetric.value?.height_cm;
-  return height ? `${height} cm` : "--";
+  if (!height && height !== 0) return "--";
+  const converted = Utils.cmToFeetInches(height);
+  if (!converted) return `${height} cm`;
+  return `${height} cm (${converted.feet}'${converted.inches}")`;
 });
 
 const weightDisplay = computed(() => {
