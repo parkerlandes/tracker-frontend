@@ -1,6 +1,11 @@
 import apiClient from "./services.js";
 
 export default {
+  // NEW — get ALL exercises
+  getAllExercises() {
+    return apiClient.get("/exercises");
+  },
+  
   // Get all exercises for a specific lesson
   getAll(id_lesson) {
     return apiClient.get(`/lesson/${id_lesson}/exercises`);
