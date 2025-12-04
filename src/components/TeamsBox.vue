@@ -74,13 +74,9 @@ const fetchTeams = async () => {
   }
 };
 
-const goToTeams = () => {
-  Utils.navigate(router, "/teams");
-};
+const goToTeams = () => router.push({ name: "teams" });
 
-const goToTeam = (id_team) => {
-  Utils.navigate(router, `/teams/${id_team}`);
-};
+const goToTeam = (id) => router.push({ name: "teamDetails", params: { id } });
 
 onMounted(fetchTeams);
 </script>

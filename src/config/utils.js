@@ -87,11 +87,4 @@ export default class Utils {
     const { data } = await services.goalProgress.getProgressForGoal(goalId);
     return Utils.sortByRecordedAtDesc(data);
   }
-
-  /** ---------------- Navigation helpers ---------------- */
-  static navigate(router, route) {
-    if (router && route) {
-      router.push(route);
-    }
-  }
 }

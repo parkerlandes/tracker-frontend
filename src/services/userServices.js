@@ -6,6 +6,7 @@ export default {
   },
 
   getUser(id) {
-    return apiClient.get(`/user/${id}`);
+    // Backend exposes user routes under /users/:id_user (plural)
+    return apiClient.get(`/users/${id}`);
   },
 };

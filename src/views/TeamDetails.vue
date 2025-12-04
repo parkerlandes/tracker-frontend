@@ -42,14 +42,19 @@ export default {
         this.team = team;
 
         const { data: memberships } = await TeamServices.getTeamMembers(teamId);
-        const memberPromises = memberships.map(async (m) => {
-          const { data: member } = await UserServices.getUser(m.id_user);
-          return member;
+        const memberPromises = (memberships || []).map(async (m) => {
+          try {
+            const { data: member } = await UserServices.getUser(m.id_user);
+            return member;
+          } catch (err) {
+            console.error(`Failed to load user ${m.id_user}:`, err?.response?.data || err);
+            return null; // Added this justincase a user has an error when being returned
+          }
         });
-        this.members = await Promise.all(memberPromises);
+        this.members = (await Promise.all(memberPromises)).filter(Boolean);
       } catch (err) {
-        console.error(err);
-        this.error = "Failed to load team details.";
+        console.error("Error loading team details:", err?.response?.data || err);
+        this.error = err?.response?.data?.message || "Failed to load team details.";
       } finally {
         this.loading = false;
       }
