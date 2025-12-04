@@ -14,7 +14,21 @@ export default {
       metrics: [],
       isLoadingMetrics: false,
       metricsError: "",
+      metricSaveMessage: "",
+      metricSaveError: "",
+      isSavingMetric: false,
+      addMetricPanel: [],
       selectedMetric: "weight_kg",
+      metricForm: {
+        recorded_at: new Date().toISOString().slice(0, 10),
+        weight_kg: "",
+        height_cm: "",
+        bench_press_lb: "",
+        squat_lb: "",
+        deadlift_lb: "",
+        mile_time_min: "",
+        notes: "",
+      },
       metricOptions: [
         { label: "Body Weight (kg)", value: "weight_kg", color: "#ef5350" },
         { label: "Height (cm)", value: "height_cm", color: "#42a5f5" },
@@ -60,6 +74,18 @@ export default {
     this.loadMetrics();
   },
   methods: {
+    resetMetricForm() {
+      this.metricForm = {
+        recorded_at: new Date().toISOString().slice(0, 10),
+        weight_kg: "",
+        height_cm: "",
+        bench_press_lb: "",
+        squat_lb: "",
+        deadlift_lb: "",
+        mile_time_min: "",
+        notes: "",
+      };
+    },
     async loadMetrics() {
       const user = Utils.getStore("user");
       if (!user) {
@@ -80,6 +106,62 @@ export default {
         this.isLoadingMetrics = false;
       }
     },
+    formatPayload(idUser) {
+      const numericFields = [
+        "weight_kg",
+        "height_cm",
+        "bench_press_lb",
+        "squat_lb",
+        "deadlift_lb",
+        "mile_time_min",
+      ];
+
+      const payload = {
+        id_user: idUser || this.user?.id_user,
+        recorded_at: this.metricForm.recorded_at,
+        notes: this.metricForm.notes || null,
+      };
+
+      numericFields.forEach((field) => {
+        const value = this.metricForm[field];
+        payload[field] =
+          value === "" || value === null || value === undefined
+            ? null
+            : Number(value);
+      });
+
+      return payload;
+    },
+    async saveMetric() {
+      const user = Utils.getStore("user");
+      if (!user) {
+        this.metricSaveError = "Please sign in again to save progress.";
+        return;
+      }
+
+      this.metricSaveError = "";
+      this.metricSaveMessage = "";
+      this.isSavingMetric = true;
+
+      try {
+        const payload = this.formatPayload(user.id_user);
+        const response = await ProgressServices.createUserMetric(payload);
+        if (response?.data) {
+          this.metrics = [...this.metrics, response.data].sort(
+            (a, b) =>
+              new Date(a.recorded_at).getTime() -
+              new Date(b.recorded_at).getTime()
+          );
+          this.metricSaveMessage = "Metric added!";
+          this.resetMetricForm();
+        }
+      } catch (err) {
+        console.error("Failed to save metric:", err);
+        this.metricSaveError = "Unable to save metric right now.";
+      } finally {
+        this.isSavingMetric = false;
+      }
+    },
   },
 };
 
@@ -92,6 +174,124 @@ export default {
     <AthleteNav v-else />
     <v-row justify="center" class="mt-6">
       <v-col cols="12" md="8" lg="6">
+        <v-expansion-panels
+          v-model="addMetricPanel"
+          multiple
+          variant="accordion"
+          class="mb-6"
+        >
+          <v-expansion-panel value="add">
+            <v-expansion-panel-title>
+              <div class="d-flex align-center ga-2">
+                <v-icon color="primary">mdi-plus</v-icon>
+                <span class="text-subtitle-1">Add a metric</span>
+              </div>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-form @submit.prevent="saveMetric">
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.recorded_at"
+                      label="Date"
+                      type="date"
+                      density="comfortable"
+                      variant="outlined"
+                      required
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.weight_kg"
+                      label="Weight (kg)"
+                      type="number"
+                      step="0.1"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.height_cm"
+                      label="Height (cm)"
+                      type="number"
+                      step="0.1"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.bench_press_lb"
+                      label="Bench Press (lb)"
+                      type="number"
+                      step="1"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.squat_lb"
+                      label="Squat (lb)"
+                      type="number"
+                      step="1"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.deadlift_lb"
+                      label="Deadlift (lb)"
+                      type="number"
+                      step="1"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="metricForm.mile_time_min"
+                      label="Mile Time (min)"
+                      type="number"
+                      step="0.1"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                  <v-col cols="12">
+                    <v-textarea
+                      v-model="metricForm.notes"
+                      label="Notes"
+                      auto-grow
+                      rows="2"
+                      density="comfortable"
+                      variant="outlined"
+                    />
+                  </v-col>
+                </v-row>
+                <div class="d-flex align-center ga-3">
+                  <v-btn
+                    type="submit"
+                    color="primary"
+                    :loading="isSavingMetric"
+                    :disabled="isSavingMetric"
+                  >
+                    Add Metric
+                  </v-btn>
+                  <span class="text-success" v-if="metricSaveMessage">
+                    {{ metricSaveMessage }}
+                  </span>
+                  <span class="text-error" v-else-if="metricSaveError">
+                    {{ metricSaveError }}
+                  </span>
+                </div>
+              </v-form>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+
         <v-select
           v-model="selectedMetric"
           :items="metricOptions"
