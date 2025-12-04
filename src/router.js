@@ -115,6 +115,12 @@ const router = createRouter({
 
     // ATHLETE PROFILE
     { path: "/athlete/profile", component: AthleteProfile },
+
+    //Athlete Teams 
+    //{ path: "/athlete/teams", component: Teams}
+
+    { path: "/athlete/progress", component: Progress },
+
   ],
 });
 

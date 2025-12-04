@@ -45,10 +45,10 @@
       return {
         user,
         navItems: [
-          { title: "Profile", icon: "mdi-account-circle", route: "/profile" },
+          { title: "Profile", icon: "mdi-account-circle", route: "/athlete/profile" },
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
-          { title: "Workout", icon: "mdi-dumbbell", route: "/workout" },
-          { title: "Goals", icon: "mdi-target", route: "/goals" },
+          { title: "Workout Catalog", icon: "mdi-dumbbell", route: "/athlete/workouts" },
+          { title: "Goals", icon: "mdi-target", route: "/athlete/goals" },
           { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
         ],
       };
