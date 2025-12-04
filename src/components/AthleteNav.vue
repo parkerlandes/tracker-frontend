@@ -49,7 +49,7 @@
           { title: "Teams", icon: "mdi-account-group", route: "/teams" },
           { title: "Workout Catalog", icon: "mdi-dumbbell", route: "/athlete/workouts" },
           { title: "Goals", icon: "mdi-target", route: "/athlete/goals" },
-          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
+          { title: "Progress", icon: "mdi-chart-line", route: "/athlete/progress" },
         ],
       };
     },

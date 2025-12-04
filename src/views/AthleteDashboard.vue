@@ -34,7 +34,7 @@
           <v-card class="pa-6 h-100" elevation="3">
             <div class="d-flex align-center justify-space-between mb-6">
               <h3 class="text-h6 mb-0">Progress</h3>
-              <v-btn size="small" variant="text" color="primary" @click="go('/progress')">
+              <v-btn size="small" variant="text" color="primary" @click="go('/athlete/progress')">
                 View
               </v-btn>
             </div>
@@ -77,7 +77,7 @@
 
       <v-row class="mt-6">
         <v-col cols="12" class="text-right">
-          <v-btn color="primary" size="large" variant="elevated" @click="go('/progress')">
+          <v-btn color="primary" size="large" variant="elevated" @click="go('/athlete/progress')">
             View progress
           </v-btn>
         </v-col>
@@ -217,4 +217,3 @@ watch(
   }
 );
 </script>
-
