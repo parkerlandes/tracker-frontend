@@ -1,38 +1,49 @@
 <template>
-  <v-app-bar app color="primary" dark elevate-on-scroll>
+  <v-app-bar
+    app
+    height="72"
+    class="coach-nav-bar"
+    elevate-on-scroll
+  >
     <v-container>
-      <v-row align="center" justify="space-between">
+      <v-row align="center" justify="space-between" no-gutters>
+
+        <!-- BRAND / LOGO -->
         <v-col cols="auto">
-          <v-btn variant="text" class="text-white text-h6" @click="goHome">
-            <v-avatar
-              v-if="user?.picture"
-              size="32"
-              class="mr-2"
-              :image="user.picture"
-            />
-            <v-icon left v-else>mdi-dumbbell</v-icon>
-            Fitness - Tracker
-          </v-btn>
+          <div class="brand-btn" @click="goHome">
+            <v-avatar size="40" class="mr-3" v-if="user?.picture">
+              <img :src="user.picture" />
+            </v-avatar>
+
+            <v-avatar size="40" class="mr-3 icon-avatar" v-else>
+              <v-icon size="26" color="white">mdi-dumbbell</v-icon>
+            </v-avatar>
+
+            <span class="brand-text">Tracker</span>
+          </div>
         </v-col>
 
-        <!-- Right: Navigation links -->
+        <!-- NAV LINKS -->
         <v-col cols="auto">
-          <v-btn
-            v-for="item in navItems"
-            :key="item.title"
-            text
-            class="text-white"
-            @click="go(item.route)"
-          >
-            <v-icon left>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
+          <div class="nav-links">
+            <v-btn
+              v-for="item in navItems"
+              :key="item.title"
+              class="nav-pill"
+              variant="text"
+              @click="go(item.route)"
+            >
+              <v-icon size="20" class="mr-1">{{ item.icon }}</v-icon>
+              {{ item.title }}
+            </v-btn>
 
-          
-          <v-btn icon color="white" @click="logout">
-            <v-icon>mdi-logout</v-icon>
-          </v-btn>
+            <!-- Logout -->
+            <v-btn icon class="logout-btn" @click="logout">
+              <v-icon size="26">mdi-logout</v-icon>
+            </v-btn>
+          </div>
         </v-col>
+
       </v-row>
     </v-container>
   </v-app-bar>
@@ -45,7 +56,7 @@ export default {
   name: "CoachNav",
   data() {
     const user = Utils.getStore("user") || {};
-    return { 
+    return {
       user,
       navItems: [
         { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/coach/athletes" },
@@ -61,11 +72,8 @@ export default {
       this.$router.push(route);
     },
     goHome() {
-      const user = Utils.getStore("user");
-      const role = user?.role;
-
-      if (role === "coach") this.$router.push("/coach");
-      else this.$router.push("/athlete");
+      const role = Utils.getStore("user")?.role;
+      this.$router.push(role === "coach" ? "/coach" : "/athlete");
     },
     logout() {
       Utils.removeItem("user");
@@ -76,3 +84,74 @@ export default {
 };
 </script>
 
+<style scoped>
+/* Glass + Coach Gradient */
+.coach-nav-bar {
+  backdrop-filter: blur(18px);
+  background: linear-gradient(
+    135deg,
+    rgb(128, 0, 0),
+    rgb(176, 176, 176),
+    rgb(128, 0, 0)
+  ) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Brand */
+.brand-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 6px 14px;
+  transition: background 0.25s ease;
+}
+
+.brand-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.brand-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.4px;
+}
+
+.icon-avatar {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+/* Nav Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-pill {
+  color: white !important;
+  font-weight: 500;
+  border-radius: 24px;
+  padding: 6px 18px;
+  transition: background 0.25s ease, transform 0.2s ease;
+  backdrop-filter: blur(6px);
+}
+
+.nav-pill:hover {
+  background: rgba(255, 255, 255, 0.20);
+  transform: translateY(-2px);
+}
+
+/* Logout Button */
+.logout-btn {
+  color: white !important;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.logout-btn:hover {
+  transform: scale(1.25);
+  color: #ffdddd !important;
+}
+</style>
