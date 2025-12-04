@@ -16,6 +16,11 @@ export default {
     return apiClient.put(`/users/${id_user}`, data);
   },
 
+  // Update only the bio field for a user
+  updateBio(id_user, bio) {
+    return apiClient.put(`/users/${id_user}`, { bio });
+  },
+
   // Create athlete 
   createAthlete(data) {
     return apiClient.post("/users/create-athlete", data);
