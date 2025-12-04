@@ -52,6 +52,26 @@
             >
               Manage Teams
             </v-btn>
+
+            
+            <v-btn
+              class="mt-3"
+              color="primary"
+              block
+              @click="openEditDialog(athlete)"
+            >
+              Edit
+            </v-btn>
+
+
+            <v-btn 
+              class="mt-3"
+              color="primary"
+              block 
+              @click="openDeleteDialog(athlete)">
+              Delete
+            </v-btn>
+
           </v-card>
         </v-col>
       </v-row>
@@ -119,6 +139,55 @@
 
         </v-card>
       </v-dialog>
+
+      <v-dialog v-model="editDialog" max-width="500">
+        <v-card class="pa-6">
+
+          <h3 class="mb-4">Edit Athlete</h3>
+
+          <v-text-field
+            v-model="editAthlete.fName"
+            label="First Name"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="editAthlete.lName"
+            label="Last Name"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="editAthlete.email"
+            label="Email"
+            variant="outlined"
+          />
+
+          <v-card-actions class="mt-4">
+            <v-spacer />
+            <v-btn variant="text" @click="editDialog = false">Cancel</v-btn>
+            <v-btn color="primary" @click="saveAthlete">Save</v-btn>
+          </v-card-actions>
+
+        </v-card>
+      </v-dialog>
+
+
+      <v-dialog v-model="deleteDialog" max-width="450">
+        <v-card class="pa-6">
+          <h3 class="mb-4">Delete Athlete</h3>
+
+          <p>Are you sure you want to delete 
+            <strong>{{ selectedAthlete?.fName }} {{ selectedAthlete?.lName }}</strong>?
+          </p>
+
+          <v-card-actions>
+            <v-spacer />
+            <v-btn text @click="deleteDialog = false">Cancel</v-btn>
+            <v-btn color="error" @click="deleteAthlete">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
     </v-container>
   </v-app>
 </template>
@@ -136,6 +205,11 @@ const loading = ref(true);
 const teamDialog = ref(false);
 const selectedAthlete = ref(null);
 const selectedTeam = ref(null);
+const deleteDialog = ref(false);
+
+const editDialog = ref(false);
+const editAthlete = ref({});
+
 
 const loadAthletes = async () => {
   try {
@@ -160,6 +234,18 @@ const loadAthletes = async () => {
   }
 };
 
+const deleteAthlete = async () => {
+  try {
+    await athleteServices.delete(selectedAthlete.value.id_user);
+
+    deleteDialog.value = false;
+
+    await loadAthletes();  // refresh list
+  } catch (err) {
+    console.error("Error deleting athlete:", err);
+  }
+};
+
 const openTeamDialog = (athlete) => {
   selectedAthlete.value = athlete;
   selectedTeam.value = null;
@@ -181,6 +267,29 @@ const removeFromTeam = async (id_user, id_team) => {
     (a) => a.id_user === id_user
   );
 };
+
+const saveAthlete = async () => {
+  try {
+    await athleteServices.update(editAthlete.value.id_user, editAthlete.value);
+
+    editDialog.value = false;
+
+    await loadAthletes(); // refresh page
+  } catch (err) {
+    console.error("Error updating athlete:", err);
+  }
+};
+
+const openEditDialog = (athlete) => {
+  editAthlete.value = { ...athlete };   // copy values so we don't bind directly
+  editDialog.value = true;
+};
+
+const openDeleteDialog = (athlete) => {
+  selectedAthlete.value = athlete;
+  deleteDialog.value = true;
+};
+
 
 
 onMounted(loadAthletes);
