@@ -1,86 +1,80 @@
-<script setup>
-import TutorialServices from "../services/exerciseServices";
-import Utils from "../config/utils.js";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+<template>
+  <v-app>
+    <CoachNav />
 
-const router = useRouter();
-const tutorials = ref([]);
-const user = Utils.getStore("user");
-const message = ref("Search, Edit or Delete Tutorials");
+    <v-container>
+      <h1 class="text-h4 font-weight-bold mt-8 mb-6">Exercises</h1>
 
-const editTutorial = (tutorial) => {
-  router.push({ name: "edit", params: { id: tutorial.id } });
-};
+      <v-text-field
+        v-model="search"
+        label="Search exercises"
+        prepend-inner-icon="mdi-magnify"
+        outlined
+        clearable
+        class="mb-4"
+      />
 
-const viewTutorial = (tutorial) => {
-  router.push({ name: "view", params: { id: tutorial.id } });
-};
+      <v-row>
+        <v-col
+          v-for="exercise in filteredExercises"
+          :key="exercise.id_exercise"
+          cols="12"
+          sm="6"
+          md="4"
+        >
+          <v-card class="pa-4 hoverable" @click="viewExercise(exercise.id_exercise)">
+            <h3 class="font-weight-bold">{{ exercise.name }}</h3>
+            <p class="text-medium-emphasis">{{ exercise.description }}</p>
 
-const deleteTutorial = (tutorial) => {
-  TutorialServices.delete(tutorial.id)
-    .then(() => {
-      retrieveTutorials();
-    })
-    .catch((e) => {
-      message.value = e.response.data.message;
+            <v-chip size="small" class="ma-1" color="primary">{{ exercise.muscleGroup }}</v-chip>
+          </v-card>
+        </v-col>
+      </v-row>
+      
+    </v-container>
+  </v-app>
+</template>
+
+<script>
+import exerciseServices from "../services/exerciseServices.js";
+import CoachNav from "../components/CoachNav.vue";
+
+export default {
+  components: { CoachNav },
+
+  data() {
+    return {
+      exercises: [],
+      search: "",
+    };
+  },
+
+  computed: {
+    filteredExercises() {
+      return this.exercises.filter(e => 
+        e.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+  },
+
+  mounted() {
+    exerciseServices.getAll().then(res => {
+      this.exercises = res.data;
     });
-};
+  },
 
-const retrieveTutorials = () => {
-  TutorialServices.getAllForUser(user.userId)
-    .then((response) => {
-      tutorials.value = response.data;
-    })
-    .catch((e) => {
-      message.value = e.response.data.message;
-    });
+  methods: {
+    viewExercise(id) {
+      this.$router.push(`/coach/exercise/${id}`);
+    },
+  },
 };
-
-retrieveTutorials();
 </script>
 
-<template>
-  <div>
-    <v-container>
-      <v-toolbar>
-        <v-toolbar-title
-          >Hello, {{ user.fName }} {{ user.lName }}!</v-toolbar-title
-        >
-      </v-toolbar>
-      <br /><br />
-      <v-card>
-        <v-card-title> Tutorials </v-card-title>
-        <v-card-text>
-          <b>{{ message }}</b>
-        </v-card-text>
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left">Title</th>
-              <th class="text-left">Description</th>
-              <th class="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in tutorials" :key="item.title">
-              <td>{{ item.title }}</td>
-              <td>{{ item.description }}</td>
-              <td>
-                <v-icon small class="mx-4" @click="editTutorial(item)">
-                  mdi-pencil
-                </v-icon>
-                <v-icon small class="mx-4" @click="viewTutorial(item)">
-                  mdi-format-list-bulleted-type
-                </v-icon>
-                <v-icon small class="mx-4" @click="deleteTutorial(item)">
-                  mdi-trash-can
-                </v-icon>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-card>
-    </v-container>
-  </div>
-</template>
+<style scoped>
+.hoverable:hover {
+  transform: translateY(-4px);
+  transition: 0.2s;
+  cursor: pointer;
+}
+</style>

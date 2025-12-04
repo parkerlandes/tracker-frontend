@@ -41,18 +41,18 @@
 <script>
 import Utils from "../config/utils";
 
-  export default {
-    name: "CoachNav",
-    data() {
+export default {
+  name: "CoachNav",
+  data() {
     const user = Utils.getStore("user") || {};
     return { 
       user,
       navItems: [
-          { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/athletes" },
-          { title: "Teams", icon: "mdi-account-group", route: "/teams" },
-          { title: "Catalog", icon: "mdi-dumbbell", route: "/catalog" },
-          { title: "Goals", icon: "mdi-target", route: "/goals" },
-          { title: "Progress", icon: "mdi-chart-line", route: "/progress" },
+        { title: "Athletes", icon: "mdi-account-multiple-outline", route: "/coach/athletes" },
+        { title: "Teams", icon: "mdi-account-group", route: "/coach/teams" },
+        { title: "Exercise Plans", icon: "mdi-dumbbell", route: "/coach/plans" },
+        { title: "Goals", icon: "mdi-target", route: "/coach/goals" },
+        { title: "Progress", icon: "mdi-chart-line", route: "/coach/progress" },
       ],
     };
   },
@@ -63,6 +63,7 @@ import Utils from "../config/utils";
     goHome() {
       const user = Utils.getStore("user");
       const role = user?.role;
+
       if (role === "coach") this.$router.push("/coach");
       else this.$router.push("/athlete");
     },
@@ -74,3 +75,4 @@ import Utils from "../config/utils";
   },
 };
 </script>
+
