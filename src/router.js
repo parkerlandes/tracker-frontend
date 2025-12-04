@@ -110,7 +110,7 @@ const router = createRouter({
     { path: "/athlete", component: AthleteDashboard },
 
     // ATHLETE PROFILE
-    { path: "/profile", component: AthleteProfile },
+    { path: "/athlete/profile", component: AthleteProfile },
 
     // ATHLETE TEAMS
     { 
@@ -120,7 +120,7 @@ const router = createRouter({
     },
 
     // ATHLETE — WORKOUT VIEWS
-    { path: "/workout", component: AthleteLessons },
+    { path: "/athlete/workouts", component: AthleteLessons },
 
     
   ],
