@@ -129,6 +129,11 @@ const router = createRouter({
   component: () => import("./views/AthleteTeams.vue"),
 },
 
+{
+  path: "/athlete/goals",
+  component: () => import("./views/AthleteGoals.vue")
+},
+
 // ATHLETE PROGRESS
 { path: "/athlete/progress", component: Progress },
 

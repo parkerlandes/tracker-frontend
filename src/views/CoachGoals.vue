@@ -211,25 +211,25 @@
   };
   
     const saveEditedGoal = async () => {
-        try {
-            const id = editGoal.value.id_player_goal;
-            const payload = { ...editGoal.value };
+    try {
+        const id = editGoal.value.id_player_goal;
+        const payload = { ...editGoal.value };
 
-            // Close the edit popup immediately
-            editDialog.value = false;
+        // Close the edit popup immediately
+        editDialog.value = false;
 
-            // Update backend
-            await goalServices.updateGoal(id, payload);
+        // Update backend
+        await goalServices.updateGoal(id, payload);
 
-            // FORCE Vue to refresh data after backend confirms
-            await loadGoals();
+        // FORCE Vue to refresh data after backend confirms
+        await loadGoals();
 
-            // Deep clone to force Vue reactivity
-            goals.value = JSON.parse(JSON.stringify(goals.value));
+        // Deep clone to force Vue reactivity
+        goals.value = JSON.parse(JSON.stringify(goals.value));
 
-        } catch (err) {
-            console.error("Error updating goal:", err);
-        }
+    } catch (err) {
+        console.error("Error updating goal:", err);
+    }
     };
 
 
