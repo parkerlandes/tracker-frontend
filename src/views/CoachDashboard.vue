@@ -13,7 +13,6 @@
 
         <v-col cols="4" class="text-right">
           <v-avatar size="64">
-            <img src="/assets/coachAvatar.png" alt="Coach"/>
           </v-avatar>
         </v-col>
       </v-row>
