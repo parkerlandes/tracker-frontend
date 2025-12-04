@@ -95,13 +95,6 @@ export default {
           route: "/coach/plans",
           description: "Select a training lesson"
         },
-        // EXERCISES
-        { 
-          title: "View Exercises",
-          icon: "mdi-dumbbell",
-          route: "/coach/exercises",
-          description: "View exercise definitions"
-        },
 
         // GOALS
         { 
