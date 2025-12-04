@@ -29,9 +29,18 @@
                 outlined
                 disabled
               ></v-text-field>
-  
+
+              <v-textarea
+                label="Bio"
+                v-model="profile.bio"
+                outlined
+                rows="3"
+                class="mb-3"
+                placeholder="Share your goals, experience, or anything your coach should know."
+              ></v-textarea>
+
               <v-divider class="my-4"></v-divider>
-  
+
               <v-btn
                 color="primary"
                 block
@@ -66,6 +75,7 @@
     fName: "",
     lName: "",
     email: "",
+    bio: "",
   });
   const message = ref("");
 
