@@ -36,7 +36,6 @@
                 outlined
                 rows="3"
                 class="mb-3"
-                placeholder="Share your goals, experience, or anything your coach should know."
               ></v-textarea>
 
               <v-divider class="my-4"></v-divider>
@@ -71,12 +70,12 @@
   import AthleteNav from "../components/AthleteNav.vue";
   import UserServices from "../services/userServices.js";
 
-  const profile = ref({
-    fName: "",
-    lName: "",
-    email: "",
-    bio: "",
-  });
+const profile = ref({
+  fName: "",
+  lName: "",
+  email: "",
+  bio: "Share your goals, experience, or anything your coach should know.",
+});
   const message = ref("");
 
   onMounted(async () => {
