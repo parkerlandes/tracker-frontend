@@ -48,12 +48,6 @@
           <v-alert v-else type="info" variant="tonal" class="mb-2">
             No exercises found for this workout.
           </v-alert>
-
-          <div class="d-flex justify-end">
-            <v-btn size="small" color="primary" variant="text" @click="openLesson(lesson.id_lesson)">
-              View workout
-            </v-btn>
-          </div>
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>

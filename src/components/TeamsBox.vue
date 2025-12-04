@@ -33,19 +33,7 @@
         </v-expansion-panel-title>
 
         <v-expansion-panel-text>
-          <div class="d-flex align-center mb-2">
-            <h4 class="text-subtitle-1 mb-0 mr-2">Teammates</h4>
-            <v-spacer></v-spacer>
-            <v-btn
-              size="small"
-              variant="text"
-              color="primary"
-              @click.stop="goToTeam(team.id_team)"
-            >
-              View team
-            </v-btn>
-          </div>
-
+        
           <v-alert
             v-if="!team.members?.length"
             type="info"

@@ -1,14 +1,16 @@
 <script>
-import AthleteNav from "../components/CoachNav.vue";
+import AthleteNav from "../components/AthleteNav.vue";
+import CoachNav from "../components/CoachNav.vue";
 import ProgressChart from "../components/ProgressChart.vue";
 import ProgressServices from "../services/progressServices.js";
 import Utils from "../config/utils.js";
 
 export default {
   name: "Progress",
-  components: { AthleteNav, ProgressChart },
+  components: { AthleteNav, CoachNav, ProgressChart },
   data() {
     return {
+      user: Utils.getStore("user"),
       metrics: [],
       isLoadingMetrics: false,
       metricsError: "",
@@ -50,6 +52,9 @@ export default {
     hasChartData() {
       return this.chartLabels.length > 0;
     },
+    isCoach() {
+      return this.user?.role === "coach";
+    },
   },
   created() {
     this.loadMetrics();
@@ -83,7 +88,8 @@ export default {
 
 <template>
   <v-container class="pa-6 mt-12">
-    <AthleteNav />
+    <CoachNav v-if="isCoach" />
+    <AthleteNav v-else />
     <v-row justify="center" class="mt-6">
       <v-col cols="12" md="8" lg="6">
         <v-select

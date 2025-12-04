@@ -106,21 +106,24 @@ const router = createRouter({
     { path: "/coach/teams", component: Teams },
     { path: "/coach/teams/:id", component: TeamDetails, props: true },
 
-    // ATHLETE DASHBOARD
-    { path: "/athlete", component: AthleteDashboard },
+// ATHLETE DASHBOARD
+{ path: "/athlete", component: AthleteDashboard },
 
-    // ATHLETE PROFILE
-    { path: "/athlete/profile", component: AthleteProfile },
+// ATHLETE PROFILE
+{ path: "/athlete/profile", component: AthleteProfile },
 
-    // ATHLETE TEAMS
-    { 
-      path: "/teams",
-      name: "athleteTeams",
-      component: () => import("./views/AthleteTeams.vue"),
-    },
+// ATHLETE TEAMS
+{ 
+  path: "/teams",
+  name: "athleteTeams",
+  component: () => import("./views/AthleteTeams.vue"),
+},
 
-    // ATHLETE — WORKOUT VIEWS
-    { path: "/athlete/workouts", component: AthleteLessons },
+// ATHLETE PROGRESS
+{ path: "/athlete/progress", component: Progress },
+
+// ATHLETE — WORKOUT VIEWS
+{ path: "/athlete/workouts", component: AthleteLessons },
 
     
   ],
