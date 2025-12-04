@@ -13,9 +13,9 @@ const router = useRouter();
 // const loading = ref(false);
 // const error = ref(null);
 
-// const goToTeam = (id_team) => {
-//   Utils.navigate(router, `/teams/${id_team}`);
-// };
+const goToTeam = (id_team) => {
+  Utils.navigate(router, `/teams/${id_team}`);
+};
 
 export default {
   name: "Teams",
@@ -95,7 +95,7 @@ export default {
             <td>{{ team.name }}</td>
             <td>{{ team.description }}</td>
             <td>
-              <v-btn color="primary" @click="$router.push(`/teams/${team.id_team}`)">
+              <v-btn color="primary" @click="goToTeam(team.id_team)">
                 View Details
               </v-btn>
             </td>
