@@ -92,6 +92,10 @@ const router = createRouter({
       path: "/coach/goals/create",
       component: () => import("./views/CreatePlayerGoal.vue"),
     },
+    {
+      path: "/coach/progress",
+      component: () => import("./views/CoachProgress.vue"),
+    },
     
 
     

@@ -9,5 +9,8 @@ export default {
   },
   createUserMetric(data) {
     return apiClient.post(`/user-metrics`, data);
-  }
+  },
+  getGoalProgress(id_goal) {
+    return apiClient.get(`/player-goal-progress/goal/${id_goal}`);
+  }  
 };
