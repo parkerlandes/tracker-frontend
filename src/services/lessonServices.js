@@ -24,7 +24,7 @@ export default {
 
   // Get lessons for a specific user
   getLessonsForUser(id_user) {
-    return apiClient.get(`/lessons/userLesson/${id_user}`);
+    return apiClient.get(`/user-lessons/user/${id_user}`);
   },
 
   deleteLesson(id_lesson) {
@@ -32,6 +32,5 @@ export default {
   }
   
 };
-
 
 

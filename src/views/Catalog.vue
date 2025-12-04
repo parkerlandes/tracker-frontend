@@ -5,6 +5,7 @@ import LessonServices from "../services/lessonServices.js";
 import MuscleGroupServices from "../services/muscleGroupsServices.js";
 import UserServices from "../services/userServices.js";
 import lessonServices from "../services/lessonServices.js";
+import userLessonServices from "../services/userLessonServices.js";
 
 
 export default {
@@ -29,12 +30,15 @@ export default {
         title: "",
         description: "",
         id_muscle_group: null,
-        id_user: null,
+        assignedUsers: [],
       },
 
       // NEW:
       deleteDialog: false,
       lessonToDelete: null,
+      assignDialog: false,
+      assignSelection: [],
+      assignLesson: null,
 
     };
   },
@@ -45,16 +49,72 @@ export default {
       try {
         const res = await LessonServices.getLessons();
 
-        this.lessons = res.data.map(lesson => ({
-          id_lesson: lesson.id_lesson,
-          title: lesson.title,
-          description: lesson.description,
-          muscleGroup: lesson.id_muscle_group,
-          assignedUser: lesson.id_user
-        }));
+        this.lessons = await Promise.all(
+          res.data.map(async (lesson) => {
+            try {
+              const assignments = await userLessonServices.getForLesson(lesson.id_lesson);
+              const assignedUsers = (assignments.data || []).map((entry) => entry.user || entry);
+              return {
+                id_lesson: lesson.id_lesson,
+                title: lesson.title,
+                description: lesson.description,
+                muscleGroup: lesson.id_muscle_group,
+                assignedUsers,
+                difficulty: lesson.difficulty,
+              };
+            } catch (err) {
+              console.error("Error fetching assignments for lesson", lesson.id_lesson, err);
+              return {
+                id_lesson: lesson.id_lesson,
+                title: lesson.title,
+                description: lesson.description,
+                muscleGroup: lesson.id_muscle_group,
+                assignedUsers: [],
+                difficulty: lesson.difficulty,
+              };
+            }
+          })
+        );
       } catch (err) {
         console.error("Error fetching lessons:", err);
         this.error = "Failed to load lessons.";
+      }
+    },
+
+    openAssignDialog(lesson) {
+      this.assignLesson = lesson;
+      this.assignSelection = lesson.assignedUsers?.map((u) => u.id_user) || [];
+      this.assignDialog = true;
+    },
+
+    async saveAssignments() {
+      if (!this.assignLesson) return;
+      const id_lesson = this.assignLesson.id_lesson;
+      const current = new Set((this.assignLesson.assignedUsers || []).map((u) => u.id_user));
+      const next = new Set(this.assignSelection);
+
+      const toAdd = [...next].filter((id) => !current.has(id));
+      const toRemove = [...current].filter((id) => !next.has(id));
+
+      try {
+        await Promise.all([
+          ...toAdd.map((id_user) => userLessonServices.assign(id_user, id_lesson)),
+          ...toRemove.map((id_user) => userLessonServices.remove(id_user, id_lesson)),
+        ]);
+        // refresh assignments for this lesson
+        const assignments = await userLessonServices.getForLesson(id_lesson);
+        const assignedUsers = (assignments.data || []).map((entry) => entry.user || entry);
+
+        this.lessons = this.lessons.map((lesson) =>
+          lesson.id_lesson === id_lesson ? { ...lesson, assignedUsers } : lesson
+        );
+
+        this.assignDialog = false;
+        this.assignLesson = null;
+        this.assignSelection = [];
+      } catch (err) {
+        console.error("Error saving assignments", err);
+        alert("Failed to update assignments.");
       }
     },
 
@@ -78,10 +138,12 @@ export default {
       try {
         const res = await UserServices.getAllUsers();
 
-        this.athletes = res.data.map(user => ({
-          id_user: user.id_user,    // ✔ FIXED
-          name: `${user.fName} ${user.lName}`
-        }));
+        this.athletes = res.data
+          .filter((user) => user.role === "athletes")
+          .map(user => ({
+            id_user: user.id_user,
+            name: `${user.fName} ${user.lName}`
+          }));
 
       } catch (err) {
         console.error("Error fetching athletes:", err);
@@ -131,7 +193,7 @@ export default {
         title: "",
         description: "",
         id_muscle_group: null,
-        id_user: null,
+        assignedUsers: [],
       };
     },
 
@@ -146,12 +208,18 @@ export default {
     },
 
     async saveLesson() {
-      if (!this.newLesson.title || !this.newLesson.id_muscle_group || !this.newLesson.id_user) {
-        alert("Title, Muscle Group, and Athlete assignment are required fields!");
+      if (!this.newLesson.title || !this.newLesson.id_muscle_group || !this.newLesson.assignedUsers.length) {
+        alert("Title, Muscle Group, and at least one athlete assignment are required!");
         return;
       }
 
-      const lessonData = this.newLesson;
+      const lessonData = {
+        title: this.newLesson.title,
+        description: this.newLesson.description,
+        id_muscle_group: this.newLesson.id_muscle_group,
+        assignedUsers: this.newLesson.assignedUsers,
+      };
+
       try {
         await lessonServices.createLesson(lessonData);
         
@@ -238,14 +306,20 @@ export default {
             <div class="mt-2">
 
               <!-- Assigned Athlete -->
-              <v-chip 
-                v-if="lesson.assignedUser"
-                color="blue"
-                small
-                class="mr-1"
-              >
-                Athlete Assigned
-              </v-chip>
+              <div class="d-flex flex-wrap justify-center">
+                <v-chip 
+                  v-for="user in lesson.assignedUsers"
+                  :key="user.id_user"
+                  color="blue"
+                  small
+                  class="ma-1"
+                >
+                  {{ user.fName }} {{ user.lName }}
+                </v-chip>
+                <v-chip v-if="!lesson.assignedUsers?.length" small class="ma-1" color="grey" variant="tonal">
+                  No athletes assigned
+                </v-chip>
+              </div>
 
               <!-- Muscle group -->
               <v-chip
@@ -264,6 +338,15 @@ export default {
 
             <v-btn color="primary" class="mt-4" @click="goToLesson(lesson.id_lesson)">
               View Lesson
+            </v-btn>
+
+            <v-btn 
+              color="secondary"
+              class="mt-4 ml-2"
+              @click="openAssignDialog(lesson)"
+            >
+              <v-icon left>mdi-account-multiple-plus</v-icon>
+              Assign
             </v-btn>
 
             <v-btn 
@@ -297,11 +380,13 @@ export default {
             ></v-text-field>
             
             <v-select
-              v-model="newLesson.id_user"
+              v-model="newLesson.assignedUsers"
               :items="athletes"
               item-title="name"
               item-value="id_user"
-              label="Assign Lesson To Athlete"
+              label="Assign Lesson To Athletes"
+              multiple
+              chips
               required
             />
             
@@ -355,6 +440,31 @@ export default {
           <v-btn variant="flat" color="error" @click="deleteLesson">
             Delete
           </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="assignDialog" max-width="500">
+      <v-card class="pa-4">
+        <v-card-title class="headline">Assign Lesson</v-card-title>
+        <v-card-text>
+          <p class="mb-3">
+            Assign <strong>{{ assignLesson?.title }}</strong> to athletes.
+          </p>
+          <v-select
+            v-model="assignSelection"
+            :items="athletes"
+            item-title="name"
+            item-value="id_user"
+            label="Select athletes"
+            multiple
+            chips
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text @click="assignDialog = false">Cancel</v-btn>
+          <v-btn color="primary" @click="saveAssignments">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
