@@ -12,13 +12,26 @@ export default {
   },
 
   // Create new lesson
-  createLesson(lessonData) {
-    return apiClient.post(`/lessons`, lessonData);
+  createLesson(data) {
+    return apiClient.post("/lessons", {
+      title: data.title,
+      description: data.description,
+      published: false,
+      id_user: data.id_user,
+      id_muscle_group: data.id_muscle_group
+    });
   },
 
   // Get lessons for a specific user
   getLessonsForUser(id_user) {
     return apiClient.get(`/lessons/userLesson/${id_user}`);
   },
+
+  deleteLesson(id_lesson) {
+    return apiClient.delete(`/lessons/${id_lesson}`);
+  }
+  
 };
+
+
 
