@@ -3,6 +3,8 @@ import AthleteNav from "../components/AthleteNav.vue";
 import CoachNav from "../components/CoachNav.vue";
 import ProgressChart from "../components/ProgressChart.vue";
 import ProgressServices from "../services/progressServices.js";
+import GoalServices from "../services/goalServices.js";
+import GoalProgressServices from "../services/playerGoalProgressServices.js";
 import Utils from "../config/utils.js";
 
 export default {
@@ -152,6 +154,7 @@ export default {
               new Date(a.recorded_at).getTime() -
               new Date(b.recorded_at).getTime()
           );
+          await this.syncGoalsWithMetric(response.data);
           this.metricSaveMessage = "Metric added!";
           this.resetMetricForm();
         }
@@ -160,6 +163,44 @@ export default {
         this.metricSaveError = "Unable to save metric right now.";
       } finally {
         this.isSavingMetric = false;
+      }
+    },
+    /**
+     * After recording a metric, create goal progress entries for any weight-based goals.
+     */
+    async syncGoalsWithMetric(metric) {
+      if (!metric?.id_user) return;
+      try {
+        const { data: goals } = await GoalServices.getUserGoals(metric.id_user);
+        if (!goals || !goals.length) return;
+
+        const exerciseToMetricField = {
+          1: "bench_press_lb", // Barbell Bench Press
+          3: "squat_lb", // Back Squat
+        };
+
+        const requests = goals
+          .map((goal) => {
+            const metricField = exerciseToMetricField[goal.id_exercise];
+            if (!metricField) return null;
+            const actualWeight = metric[metricField];
+            if (actualWeight === null || actualWeight === undefined) return null;
+
+            return GoalProgressServices.createProgressEntry({
+              id_player_goal: goal.id_player_goal,
+              id_user_metric: metric.id_user_metric,
+              recorded_at: metric.recorded_at,
+              actual_weight: actualWeight,
+              notes: "Auto-logged from user metric",
+            });
+          })
+          .filter(Boolean);
+
+        if (requests.length) {
+          await Promise.all(requests);
+        }
+      } catch (err) {
+        console.error("Failed to sync goal progress from metric:", err);
       }
     },
   },
