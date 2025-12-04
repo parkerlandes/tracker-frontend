@@ -153,8 +153,28 @@ const weightDisplay = computed(() => {
 const bioDisplay = computed(() => user.value?.bio || "Tell us about your goals.");
 
 const progressPercent = computed(() => {
-  if (!selectedGoal.value || !latestGoalProgress.value) return 0;
-  return Utils.calculateGoalPercent(selectedGoal.value, latestGoalProgress.value);
+  const goal = selectedGoal.value;
+  const metric = latestMetric.value;
+  if (!goal || !metric) return 0;
+
+  const exerciseMetricField = {
+    1: "bench_press_lb", // Barbell Bench Press
+    3: "squat_lb", // Back Squat
+  };
+
+  const targetWeight = goal.playerReps || goal.target_weight || goal.targetWeight;
+  const metricField = exerciseMetricField[goal.id_exercise];
+  const actualWeight = metricField ? metric[metricField] : null;
+
+  if (targetWeight && actualWeight) {
+    return Utils.clampPercent((actualWeight / targetWeight) * 100);
+  }
+
+  if (goal.playerTime && metric.mile_time_min) {
+    return Utils.clampPercent((goal.playerTime / metric.mile_time_min) * 100);
+  }
+
+  return 0;
 });
 
 const primaryGoalTitle = computed(() => selectedGoal.value?.title || "Goal");
