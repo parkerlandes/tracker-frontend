@@ -34,6 +34,9 @@
 import { ref, onMounted } from "vue";
 import goalServices from "../services/goalServices.js";
 import Utils from "../config/utils.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   athleteId: Number
@@ -42,7 +45,7 @@ const props = defineProps({
 const goals = ref([]);
 
 const goToGoals = () => {
-  window.location.href = "/athlete/goals";  // ensures full navigation
+  router.push("/athlete/goals");
 };
 
 onMounted(async () => {
