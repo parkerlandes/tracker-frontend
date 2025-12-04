@@ -60,7 +60,7 @@ export default {
   },
 
   mounted() {
-    teamServices.getAll()
+    teamServices.getAllTeams()
       .then(res => {
         this.teams = res.data;
       })
@@ -81,7 +81,7 @@ export default {
 
         // Step 2 — assign to team
         if (this.athlete.id_team) {
-          await teamServices.assignAthlete(userId, this.athlete.id_team);
+          await teamServices.assignToTeam(userId, this.athlete.id_team);
         }
 
         this.$router.push("/coach/athletes");
