@@ -1,11 +1,28 @@
 import apiClient from "./services.js";
 
 export default {
+  // Get ALL users (coaches use this)
   getAllUsers() {
-    return apiClient.get("/users/athletes"); 
+    return apiClient.get("/users");
   },
 
-  getUser(id) {
-    return apiClient.get(`/user/${id}`);
+  // Get one user
+  getUser(id_user) {
+    return apiClient.get(`/users/${id_user}`);
   },
+
+  // UPDATE user  
+  updateUser(id_user, data) {
+    return apiClient.put(`/users/${id_user}`, data);
+  },
+
+  // Create athlete 
+  createAthlete(data) {
+    return apiClient.post("/users/create-athlete", data);
+  },
+
+  // Delete a user 
+  deleteUser(id_user) {
+    return apiClient.delete(`/users/${id_user}`);
+  }
 };
