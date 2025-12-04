@@ -65,10 +65,7 @@
           :data-points="chartValues"
           color="#42a5f5"
         />
-  
-        <!-- ==========================
-             NO DATA MESSAGE
-        =========================== -->
+
         <div v-else class="text-center text-medium-emphasis mt-6">
           Select an athlete and a goal to view progress.
         </div>
