@@ -2,7 +2,7 @@
   <v-app>
     <AthleteNav />
 
-    <v-container class="pa-8 mt-10">
+  <v-container class="pa-8 mt-10">
       <h2 class="mb-6 text-center">Workouts</h2>
 
       <!-- Loading Spinner -->
@@ -23,20 +23,34 @@
         >
           <v-expansion-panel-title>
             <v-row no-gutters align="center" justify="space-between" class="w-100">
-              <v-col cols="8">
-                <strong>{{ lesson.title }}</strong>
+              <v-col cols="8" class="d-flex align-center">
+                <v-avatar color="secondary" class="mr-3">
+                  <v-icon color="white">mdi-clipboard-text</v-icon>
+                </v-avatar>
+                <div>
+                  <strong>{{ lesson.title }}</strong>
+                  <div class="text-caption text-medium-emphasis">
+                    {{ lesson.description || "No description" }}
+                  </div>
+                </div>
               </v-col>
               <v-col cols="4" class="text-right">
-                <v-chip color="secondary" label v-if="lesson.difficulty">
+                <v-chip
+                  class="ma-1"
+                  color="secondary"
+                  variant="outlined"
+                  v-if="lesson.difficulty"
+                >
                   {{ lesson.difficulty }}
+                </v-chip>
+                <v-chip class="ma-1" variant="outlined" color="primary">
+                  {{ exercises[lesson.id_lesson]?.length || 0 }} exercises
                 </v-chip>
               </v-col>
             </v-row>
           </v-expansion-panel-title>
 
           <v-expansion-panel-text>
-            <p class="mb-4 text-medium-emphasis">{{ lesson.description }}</p>
-
             <v-list v-if="exercises[lesson.id_lesson]?.length">
               <v-list-item
                 v-for="exercise in exercises[lesson.id_lesson]"
@@ -69,6 +83,17 @@
             <v-alert v-else type="info" class="mt-2">
               No exercises found for this lesson.
             </v-alert>
+
+            <div class="d-flex justify-end mt-2">
+              <v-btn
+                size="small"
+                variant="text"
+                color="primary"
+                @click="openWorkout(lesson.id_lesson)"
+              >
+                Open workout
+              </v-btn>
+            </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -82,24 +107,34 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import AthleteNav from "../components/AthleteNav.vue";
 import lessonServices from "../services/lessonServices.js";
 import exerciseServices from "../services/exerciseServices.js";
+import Utils from "../config/utils.js";
 
 const lessons = ref([]);
 const exercises = ref({});
 const loading = ref(true);
 const error = ref("");
 const expandedPanels = ref([]);
+const router = useRouter();
 
-// Load all lessons
+const user = Utils.getStore("user");
+
+// Load all lessons assigned to the athlete
 onMounted(async () => {
+  if (!user?.id_user) {
+    error.value = "Please sign in again to view workouts.";
+    loading.value = false;
+    return;
+  }
   try {
-    const res = await lessonServices.getLessons();
-    lessons.value = res.data;
+    const res = await lessonServices.getLessonsForUser(user.id_user);
+    lessons.value = (res.data || []).map((entry) => entry.lesson || entry);
   } catch (err) {
     console.error("Error fetching lessons:", err);
-    error.value = "Failed to load lessons.";
+    error.value = "Failed to load workouts.";
   } finally {
     loading.value = false;
   }
@@ -110,10 +145,7 @@ const loadLessonAndExercises = async (id) => {
   if (exercises.value[id]) return; // Skip if already loaded
 
   try {
-    const [lessonRes, exercisesRes] = await Promise.all([
-      lessonServices.getLesson(id),
-      exerciseServices.getAll(id),
-    ]);
+    const exercisesRes = await exerciseServices.getAll(id);
     exercises.value[id] = exercisesRes.data.map((ex) => ({
       ...ex,
       completed: false, // Add completed flag
@@ -131,6 +163,10 @@ const toggleCompleted = (lessonId, exerciseId) => {
 
   const exercise = exList.find((e) => e.id_exercise === exerciseId);
   if (exercise) exercise.completed = !exercise.completed;
+};
+
+const openWorkout = (id) => {
+  Utils.navigate(router, `/athlete/workout/${id}`);
 };
 </script>
 
