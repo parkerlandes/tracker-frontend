@@ -100,7 +100,7 @@ export default {
         { 
           title: "Manage Goals",
           icon: "mdi-target",
-          route: "/goals",
+          route: "/coach/goals",
           description: "Add/Edit/Delete athlete goals"
         },
 

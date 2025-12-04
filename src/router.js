@@ -84,7 +84,17 @@ const router = createRouter({
     { path: "/coach/plans/edit/:id", component: EditExercisePlan, props: true },
 
     // COACH — GOALS & PROGRESS
-    { path: "/coach/goals", component: ExerciseGoals },
+    {
+      path: "/coach/goals",
+      component: () => import("./views/CoachGoals.vue"),
+    },
+    { 
+      path: "/coach/goals/create",
+      component: () => import("./views/CreatePlayerGoal.vue"),
+    },
+    
+
+    
     { path: "/coach/progress", component: Progress },
 
     // COACH — LESSON DETAILS
