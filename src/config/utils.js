@@ -57,18 +57,20 @@ export default class Utils {
   // clamp percent values between 0 and 100
   static clampPercent = (val) => Math.min(100, Math.max(0, Math.round(val)));
 
-  // calculate goal progress percentage for reps/time-based goals
+  // calculate goal progress percentage prioritizing weight-based goals (1RM/max)
   static calculateGoalPercent(goal, progress) {
     if (!goal || !progress) return 0;
-    const { playerReps, playerTime } = goal;
-    const { actual_reps, actual_time } = progress;
+    // targetWeight may be stored under different keys depending on goal creation
+    const targetWeight =
+      goal.target_weight || goal.targetWeight || goal.playerWeight || goal.playerReps;
+    const { actual_weight, actual_time } = progress;
 
-    if (playerReps && actual_reps) {
-      return Utils.clampPercent((actual_reps / playerReps) * 100);
+    if (targetWeight && actual_weight) {
+      return Utils.clampPercent((actual_weight / targetWeight) * 100);
     }
-    if (playerTime && actual_time) {
+    if (goal.playerTime && actual_time) {
       // faster time is better: target / actual
-      return Utils.clampPercent((playerTime / actual_time) * 100);
+      return Utils.clampPercent((goal.playerTime / actual_time) * 100);
     }
     return 0;
   }
