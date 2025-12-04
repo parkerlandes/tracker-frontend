@@ -17,8 +17,9 @@ export default {
       title: data.title,
       description: data.description,
       published: false,
-      id_user: data.id_user,
-      id_muscle_group: data.id_muscle_group
+      id_user: data.id_user, // optional owner/creator
+      id_muscle_group: data.id_muscle_group,
+      assignedUsers: data.assignedUsers || [],
     });
   },
 
@@ -32,5 +33,4 @@ export default {
   }
   
 };
-
 
