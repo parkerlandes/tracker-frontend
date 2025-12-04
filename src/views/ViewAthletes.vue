@@ -7,6 +7,7 @@
     <v-container class="mt-10">
       <h2 class="text-center mb-6">Athletes</h2>
 
+
       <v-progress-circular
         v-if="loading"
         indeterminate
@@ -14,6 +15,7 @@
         size="48"
         class="d-flex mx-auto my-6"
       />
+      
 
       <v-row v-else>
         <v-col
@@ -72,6 +74,7 @@
               Delete
             </v-btn>
 
+            
           </v-card>
         </v-col>
       </v-row>
@@ -187,8 +190,16 @@
         </v-card>
       </v-dialog>
 
+      <v-btn
+          color="primary"
+          @click="$router.push('/coach/athlete/add')"
+        >
+          <v-icon left>mdi-account-plus</v-icon>
+          Add Athlete
+      </v-btn>
 
     </v-container>
+
   </v-app>
 </template>
 
