@@ -26,11 +26,27 @@ const myCustomLightTheme = {
   },
 };
 
+const myCustomDarkTheme = {
+  dark: true,
+  colors: {
+    primary: "#80162B",
+    secondary: "#2C2C2C",
+    accent: "#47121D",
+    success: "#47121D",
+    error: "#EE5044",
+    teal: "#63BAC0",
+    blue: "#196CA2",
+    yellow: "#F8C545",
+    darkblue: "#032F45",
+  },
+};
+
 const vuetify = createVuetify({
   theme: {
     defaultTheme: "myCustomLightTheme",
     themes: {
       myCustomLightTheme,
+      myCustomDarkTheme,
     },
   },
   icons: {

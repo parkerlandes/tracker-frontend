@@ -3,18 +3,26 @@
     <CoachNav />
 
     <h1 class="text-h5 font-weight-bold mb-6"></h1>
+    <h1 class="text-h5 font-weight-bold mb-6"></h1>
+    <h1 class="text-h5 font-weight-bold mb-6"></h1>
 
-    <v-container class="mt-10">
-      <!-- LESSON INFO -->
-      <v-card v-if="lesson" class="pa-6 mb-8" elevation="3">
-        <h2>{{ lesson.title }}</h2>
-        <p class="text-medium-emphasis mb-4">{{ lesson.description }}</p>
-      </v-card>
+    <!-- LESSON INFO -->
+    <v-container v-if="lesson" class="pa-6 mb-8" elevation="3">
+      <div class="d-flex justify-space-between align-center mb-6">
+        <!-- LEFT SIDE: TITLE + DESCRIPTION STACKED -->
+        <div>
+          <h2 class="mb-1">{{ lesson.title }}</h2>
+          <p class="text-medium-emphasis mb-0">{{ lesson.description }}</p>
+        </div>
+
+        <!-- RIGHT SIDE: BUTTON -->
+        <v-btn color="primary" @click="showAddDialog = true">
+          <v-icon left>mdi-plus-box</v-icon>
+          Add New Exercise
+        </v-btn>
+      </div>
 
       <!-- ADD EXERCISE BUTTON -->
-      <v-btn color="primary" class="mb-4" @click="showAddDialog = true">
-        Add New Exercise
-      </v-btn>
 
       <!-- EXERCISES GRID -->
       <v-row v-if="exercises.length">
@@ -33,10 +41,14 @@
 
             <v-row class="mt-3">
               <v-col cols="6">
-                <v-btn color="primary" block @click="openEditDialog(exercise)">Edit</v-btn>
+                <v-btn color="grey" block @click="openEditDialog(exercise)"
+                  >Edit</v-btn
+                >
               </v-col>
               <v-col cols="6">
-                <v-btn color="error" block @click="openDeleteDialog(exercise)">Delete</v-btn>
+                <v-btn color="error" block @click="openDeleteDialog(exercise)"
+                  >Delete</v-btn
+                >
               </v-col>
             </v-row>
           </v-card>
@@ -51,14 +63,39 @@
       <v-dialog v-model="showAddDialog" max-width="500">
         <v-card class="pa-6">
           <h3 class="mb-4">Add New Exercise</h3>
-          <v-text-field v-model="newExercise.name" label="Name" outlined dense />
-          <v-textarea v-model="newExercise.description" label="Description" outlined dense auto-grow />
-          <v-text-field v-model="newExercise.reps" label="Reps" type="number" outlined dense />
-          <v-text-field v-model="newExercise.sets" label="Sets" type="number" outlined dense />
+          <v-text-field
+            v-model="newExercise.name"
+            label="Name"
+            outlined
+            dense
+          />
+          <v-textarea
+            v-model="newExercise.description"
+            label="Description"
+            outlined
+            dense
+            auto-grow
+          />
+          <v-text-field
+            v-model="newExercise.reps"
+            label="Reps"
+            type="number"
+            outlined
+            dense
+          />
+          <v-text-field
+            v-model="newExercise.sets"
+            label="Sets"
+            type="number"
+            outlined
+            dense
+          />
 
           <v-row class="mt-4">
             <v-col cols="6">
-              <v-btn block color="grey" @click="showAddDialog = false">Cancel</v-btn>
+              <v-btn block color="grey" @click="showAddDialog = false"
+                >Cancel</v-btn
+              >
             </v-col>
             <v-col cols="6">
               <v-btn block color="primary" @click="addExercise">Save</v-btn>
@@ -71,14 +108,39 @@
       <v-dialog v-model="editDialog" max-width="500">
         <v-card class="pa-6">
           <h3 class="mb-4">Edit Exercise</h3>
-          <v-text-field v-model="editExercise.name" label="Name" outlined dense />
-          <v-textarea v-model="editExercise.description" label="Description" outlined dense auto-grow />
-          <v-text-field v-model="editExercise.reps" label="Reps" type="number" outlined dense />
-          <v-text-field v-model="editExercise.sets" label="Sets" type="number" outlined dense />
+          <v-text-field
+            v-model="editExercise.name"
+            label="Name"
+            outlined
+            dense
+          />
+          <v-textarea
+            v-model="editExercise.description"
+            label="Description"
+            outlined
+            dense
+            auto-grow
+          />
+          <v-text-field
+            v-model="editExercise.reps"
+            label="Reps"
+            type="number"
+            outlined
+            dense
+          />
+          <v-text-field
+            v-model="editExercise.sets"
+            label="Sets"
+            type="number"
+            outlined
+            dense
+          />
 
           <v-row class="mt-4">
             <v-col cols="6">
-              <v-btn block color="grey" @click="editDialog = false">Cancel</v-btn>
+              <v-btn block color="grey" @click="editDialog = false"
+                >Cancel</v-btn
+              >
             </v-col>
             <v-col cols="6">
               <v-btn block color="primary" @click="saveEdit">Save</v-btn>
@@ -92,11 +154,17 @@
         <v-card class="pa-6 text-center">
           <v-icon color="error" size="48">mdi-alert-circle</v-icon>
           <h3 class="my-3">Delete Exercise</h3>
-          <p>Are you sure you want to delete <strong>{{ deleteExerciseTarget?.name }}</strong>?</p>
+          <p>
+            Are you sure you want to delete
+            <strong>{{ deleteExerciseTarget?.name }}</strong
+            >?
+          </p>
 
           <v-row class="mt-4">
             <v-col cols="6">
-              <v-btn block color="grey" @click="deleteDialog = false">Cancel</v-btn>
+              <v-btn block color="grey" @click="deleteDialog = false"
+                >Cancel</v-btn
+              >
             </v-col>
             <v-col cols="6">
               <v-btn block color="error" @click="confirmDelete">Delete</v-btn>
@@ -105,6 +173,10 @@
         </v-card>
       </v-dialog>
     </v-container>
+    <v-btn class="ma-4" variant="text" color="primary" @click="goBack">
+      <v-icon left>mdi-arrow-left</v-icon>
+      Back to Plans
+    </v-btn>
   </v-app>
 </template>
 
@@ -150,7 +222,7 @@ const addExercise = async () => {
   try {
     await exerciseServices.addExercise(id_lesson, {
       ...newExercise.value,
-      id_lesson
+      id_lesson,
     });
 
     showAddDialog.value = false;
@@ -160,7 +232,6 @@ const addExercise = async () => {
     console.error("Error adding exercise:", err);
   }
 };
-
 
 // EDIT
 const openEditDialog = (exercise) => {
@@ -198,6 +269,11 @@ const confirmDelete = async () => {
     console.error("Error deleting exercise:", err);
   }
 };
+
+const goBack = () => {
+  window.location.href = "http://localhost:8081/coach/plans";
+};
+
 
 onMounted(loadLessonAndExercises);
 </script>

@@ -63,6 +63,8 @@ export default {
     <CoachNav v-if="isCoach" />
     <AthleteNav v-else />
 
+    <h1 class="text-h5 font-weight-bold mb-6"></h1>
+
     <v-container class="pa-6">
       <v-btn variant="text" prepend-icon="mdi-arrow-left" @click="$router.back()" class="mb-4">
         Back

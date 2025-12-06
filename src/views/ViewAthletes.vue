@@ -3,10 +3,16 @@
     <CoachNav />
 
     <h1 class="text-h5 font-weight-bold mb-6"></h1>
+    <h1 class="text-h5 font-weight-bold mb-6"></h1>
 
     <v-container class="mt-10">
-      <h2 class="text-center mb-6">Athletes</h2>
-
+      <div class="d-flex justify-space-between align-center mb-6">
+        <h2>Athletes</h2>
+        <v-btn color="primary" @click="addAthleteDialog = true">
+          <v-icon left>mdi-plus-box</v-icon>
+          Add Athlete
+        </v-btn>
+      </div>
 
       <v-progress-circular
         v-if="loading"
@@ -15,7 +21,6 @@
         size="48"
         class="d-flex mx-auto my-6"
       />
-      
 
       <v-row v-else>
         <v-col
@@ -55,7 +60,6 @@
               Manage Teams
             </v-btn>
 
-            
             <v-btn
               class="mt-3"
               color="primary"
@@ -65,19 +69,72 @@
               Edit
             </v-btn>
 
-
-            <v-btn 
+            <v-btn
               class="mt-3"
               color="primary"
-              block 
-              @click="openDeleteDialog(athlete)">
+              block
+              @click="openDeleteDialog(athlete)"
+            >
               Delete
             </v-btn>
-
-            
           </v-card>
         </v-col>
       </v-row>
+
+      <!-- ADD ATHLETE DIALOG -->
+      <v-dialog v-model="addAthleteDialog" max-width="600">
+        <v-card class="pa-6">
+          <h3 class="mb-4">Add New Athlete</h3>
+
+          <v-form ref="addAthleteForm">
+            <v-text-field
+              v-model="newAthlete.fName"
+              label="First Name"
+              required
+            />
+
+            <v-text-field
+              v-model="newAthlete.lName"
+              label="Last Name"
+              required
+            />
+
+            <v-text-field
+              v-model="newAthlete.email"
+              label="Email"
+              type="email"
+            />
+
+            <v-select
+              v-model="newAthlete.id_team"
+              :items="teams"
+              item-title="name"
+              item-value="id_team"
+              label="Assign to Team"
+              clearable
+            />
+
+            <v-row class="mt-4">
+              <v-col cols="6">
+                <v-btn
+                  block
+                  color="grey"
+                  variant="text"
+                  @click="addAthleteDialog = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-col>
+
+              <v-col cols="6">
+                <v-btn block color="primary" @click="submitNewAthlete">
+                  Save Athlete
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-dialog>
 
       <!-- TEAM MANAGEMENT DIALOG -->
       <v-dialog v-model="teamDialog" max-width="500">
@@ -139,13 +196,11 @@
               Close
             </v-btn>
           </v-card-actions>
-
         </v-card>
       </v-dialog>
 
       <v-dialog v-model="editDialog" max-width="500">
         <v-card class="pa-6">
-
           <h3 class="mb-4">Edit Athlete</h3>
 
           <v-text-field
@@ -169,17 +224,18 @@
             <v-btn variant="text" @click="editDialog = false">Cancel</v-btn>
             <v-btn color="primary" @click="saveAthlete">Save</v-btn>
           </v-card-actions>
-
         </v-card>
       </v-dialog>
-
 
       <v-dialog v-model="deleteDialog" max-width="450">
         <v-card class="pa-6">
           <h3 class="mb-4">Delete Athlete</h3>
 
-          <p>Are you sure you want to delete 
-            <strong>{{ selectedAthlete?.fName }} {{ selectedAthlete?.lName }}</strong>?
+          <p>
+            Are you sure you want to delete
+            <strong
+              >{{ selectedAthlete?.fName }} {{ selectedAthlete?.lName }}</strong
+            >?
           </p>
 
           <v-card-actions>
@@ -189,17 +245,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-
-      <v-btn
-          color="primary"
-          @click="$router.push('/coach/athlete/add')"
-        >
-          <v-icon left>mdi-account-plus</v-icon>
-          Add Athlete
-      </v-btn>
-
     </v-container>
-
   </v-app>
 </template>
 
@@ -210,17 +256,17 @@ import athleteServices from "../services/athleteServices.js";
 import teamServices from "../services/teamServices.js";
 
 const athletes = ref([]);
-const teams = ref([]);
-const loading = ref(true);
-
-const teamDialog = ref(false);
+const addAthleteDialog = ref(false);
 const selectedAthlete = ref(null);
-const selectedTeam = ref(null);
-const deleteDialog = ref(false);
-
 const editDialog = ref(false);
 const editAthlete = ref({});
+const deleteDialog = ref(false);
 
+const teams = ref([]);
+const teamDialog = ref(false);
+const selectedTeam = ref(null);
+
+const loading = ref(true);
 
 const loadAthletes = async () => {
   try {
@@ -235,7 +281,7 @@ const loadAthletes = async () => {
       const res = await teamServices.getUserTeams(athlete.id_user);
       athlete.teams = res.data.map((t) => ({
         id_team: t.team.id_team,
-        name: t.team.name
+        name: t.team.name,
       }));
     }
   } catch (err) {
@@ -245,13 +291,20 @@ const loadAthletes = async () => {
   }
 };
 
+const newAthlete = ref({
+  fName: "",
+  lName: "",
+  email: "",
+  id_team: null,
+});
+
 const deleteAthlete = async () => {
   try {
     await athleteServices.delete(selectedAthlete.value.id_user);
 
     deleteDialog.value = false;
 
-    await loadAthletes();  // refresh list
+    await loadAthletes(); // refresh list
   } catch (err) {
     console.error("Error deleting athlete:", err);
   }
@@ -274,9 +327,36 @@ const assignToTeam = async (id_user, id_team) => {
 const removeFromTeam = async (id_user, id_team) => {
   await teamServices.removeFromTeam(id_user, id_team);
   await loadAthletes();
-  selectedAthlete.value = athletes.value.find(
-    (a) => a.id_user === id_user
-  );
+  selectedAthlete.value = athletes.value.find((a) => a.id_user === id_user);
+};
+
+const submitNewAthlete = async () => {
+  try {
+    // 1 — create athlete
+    const created = await athleteServices.createAthlete({
+      fName: newAthlete.value.fName,
+      lName: newAthlete.value.lName,
+      email: newAthlete.value.email,
+    });
+
+    const userId = created.data.id_user;
+
+    // 2 — assign to team
+    if (newAthlete.value.id_team) {
+      await teamServices.assignToTeam(userId, newAthlete.value.id_team);
+    }
+
+    // close dialog
+    addAthleteDialog.value = false;
+
+    // reset form
+    newAthlete.value = { fName: "", lName: "", email: "", id_team: null };
+
+    // refresh list
+    await loadAthletes();
+  } catch (err) {
+    console.error("Error creating athlete:", err);
+  }
 };
 
 const saveAthlete = async () => {
@@ -292,7 +372,7 @@ const saveAthlete = async () => {
 };
 
 const openEditDialog = (athlete) => {
-  editAthlete.value = { ...athlete };   // copy values so we don't bind directly
+  editAthlete.value = { ...athlete }; // copy values so we don't bind directly
   editDialog.value = true;
 };
 
@@ -300,8 +380,6 @@ const openDeleteDialog = (athlete) => {
   selectedAthlete.value = athlete;
   deleteDialog.value = true;
 };
-
-
 
 onMounted(loadAthletes);
 </script>

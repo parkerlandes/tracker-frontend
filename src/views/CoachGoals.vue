@@ -1,13 +1,15 @@
 <template>
     <v-app>
       <CoachNav />
+
+      <h1 class="text-h5 font-weight-bold mb-6"></h1>
   
       <v-container class="pa-8 mt-10">
         <div class="d-flex justify-space-between align-center mb-6">
           <h2>Player Goals</h2>
   
           <v-btn color="primary" @click="$router.push('/coach/goals/create')">
-            <v-icon left>mdi-plus</v-icon>
+            <v-icon left>mdi-plus-box</v-icon>
             Add Goal
           </v-btn>
         </div>
