@@ -3,35 +3,35 @@
     <CoachNav />
 
     <h1 class="text-h5 font-weight-bold mb-6"></h1>
+    <h1 class="text-h5 font-weight-bold mb-6"></h1>
 
     <v-container class="mt-10">
       <div class="d-flex justify-space-between align-center mb-6">
         <h2>Teams</h2>
 
         <v-btn color="primary" @click="openCreateDialog">
-          <v-icon left>mdi-plus</v-icon>
-          New Team
+          <v-icon left>mdi-plus-box</v-icon>
+          Add Team
         </v-btn>
       </div>
 
-      <v-progress-circular 
-        v-if="loading" 
-        indeterminate 
-        color="primary" 
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="primary"
         size="48"
-        class="d-flex mx-auto my-6" 
+        class="d-flex mx-auto my-6"
       />
 
       <v-expansion-panels v-model="openPanels" multiple>
-        <v-expansion-panel
-          v-for="team in teams"
-          :key="team.id_team"
-        >
+        <v-expansion-panel v-for="team in teams" :key="team.id_team">
           <v-expansion-panel-title>
-            {{ team.name }}
-            <v-spacer/>
+            <h3>{{ team.name }}</h3>
+            <v-spacer />
 
-            <v-chip class="ma-1">{{ team.members?.length || 0 }} athletes</v-chip>
+            <v-chip class="ma-1"
+              >{{ team.members?.length || 0 }} athletes</v-chip
+            >
             <v-chip class="ma-1" variant="outlined" color="secondary">
               {{ team.plans?.length || 0 }} plans
             </v-chip>
@@ -59,11 +59,7 @@
               </v-btn>
             </div>
 
-            <v-alert 
-              v-if="!team.members?.length"
-              type="info"
-              class="mb-4"
-            >
+            <v-alert v-if="!team.members?.length" type="info" class="mb-4">
               No athletes assigned to this team yet.
             </v-alert>
 
@@ -112,17 +108,13 @@
             </v-alert>
 
             <v-list v-else>
-              <v-list-item
-                v-for="plan in team.plans"
-                :key="plan.id_lesson"
-              >
+              <v-list-item v-for="plan in team.plans" :key="plan.id_lesson">
                 <v-list-item-title>{{ plan.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
-
 
       <!-- CREATE TEAM DIALOG -->
       <v-dialog v-model="createDialog" max-width="500">
@@ -136,7 +128,7 @@
           />
 
           <v-card-actions>
-            <v-spacer/>
+            <v-spacer />
             <v-btn text @click="createDialog = false">Cancel</v-btn>
             <v-btn color="primary" @click="createTeam">Create</v-btn>
           </v-card-actions>
@@ -159,7 +151,7 @@
               <v-icon left>mdi-delete</v-icon>
               Delete Team
             </v-btn>
-            <v-spacer/>
+            <v-spacer />
             <v-btn text @click="editDialog = false">Cancel</v-btn>
             <v-btn color="primary" @click="updateTeam">Save</v-btn>
           </v-card-actions>
@@ -169,15 +161,15 @@
       <!-- MANAGE PLANS DIALOG (unchanged from before) -->
       <v-dialog v-model="plansDialog" max-width="600">
         <v-card class="pa-6">
-          <h3 class="mb-4">
-            Manage Plans for {{ selectedTeam?.name }}
-          </h3>
+          <h3 class="mb-4">Manage Plans for {{ selectedTeam?.name }}</h3>
 
           <div v-if="selectedTeam">
             <!-- CURRENT PLANS -->
             <h4 class="mb-2">Current Plans</h4>
 
-            <v-alert v-if="!selectedTeam.plans?.length" type="info">No exercise plans assigned.</v-alert>
+            <v-alert v-if="!selectedTeam.plans?.length" type="info"
+              >No exercise plans assigned.</v-alert
+            >
 
             <v-list v-else class="mb-4">
               <v-list-item
@@ -187,7 +179,13 @@
                 <v-list-item-title>{{ plan.title }}</v-list-item-title>
 
                 <template #append>
-                  <v-btn icon color="error" @click="removePlanFromTeam(selectedTeam.id_team, plan.id_lesson)">
+                  <v-btn
+                    icon
+                    color="error"
+                    @click="
+                      removePlanFromTeam(selectedTeam.id_team, plan.id_lesson)
+                    "
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </template>
@@ -227,7 +225,6 @@
 
       <v-dialog v-model="assignDialog" max-width="500">
         <v-card class="pa-6">
-
           <h3 class="mb-4">Assign Athletes to {{ selectedTeam?.name }}</h3>
 
           <v-select
@@ -241,7 +238,7 @@
             clearable
           ></v-select>
 
-          <v-btn 
+          <v-btn
             class="mt-3"
             color="primary"
             block
@@ -255,14 +252,11 @@
             <v-spacer />
             <v-btn variant="tonal" @click="assignDialog = false">Close</v-btn>
           </v-card-actions>
-
         </v-card>
       </v-dialog>
-
     </v-container>
   </v-app>
 </template>
-
 
 <script setup>
 import { ref, onMounted } from "vue";
@@ -280,24 +274,19 @@ const createDialog = ref(false);
 const editDialog = ref(false);
 const plansDialog = ref(false);
 const assignDialog = ref(false);
-const assignSelected = ref([]);    // array of athlete IDs
-
-
+const assignSelected = ref([]); // array of athlete IDs
 
 // form models
 const newTeamName = ref("");
 const editTeamName = ref("");
 const selectedAthletes = ref([]);
 const selectedAthleteIds = ref([]);
-const athletes = ref([]); 
+const athletes = ref([]);
 const allAthletes = ref([]);
 const selectedTeam = ref(null);
 const selectedTeamObj = ref(null);
 const selectedLesson = ref(null);
 const allLessons = ref([]);
-
-
-
 
 // ---- LOAD DATA ----
 const loadTeamsAndMembers = async () => {
@@ -337,8 +326,6 @@ const loadTeamsAndMembers = async () => {
   }
 };
 
-
-
 const loadAllLessons = async () => {
   try {
     const res = await lessonServices.getLessons();
@@ -350,7 +337,7 @@ const loadAllLessons = async () => {
 
 const loadAllAthletes = async () => {
   const res = await athleteServices.getAll();
-  allAthletes.value = res.data.map(a => ({
+  allAthletes.value = res.data.map((a) => ({
     id_user: Number(a.id_user),
     fullName: `${a.fName} ${a.lName}`,
   }));
@@ -385,9 +372,8 @@ const openAssignDialog = async (team) => {
   await loadAllAthletes();
 
   // Extract IDs of athletes already on this team
-  selectedAthletes.value = team.members.map(m => Number(m.id_user));
+  selectedAthletes.value = team.members.map((m) => Number(m.id_user));
 };
-
 
 const updateTeam = async () => {
   await teamServices.updateTeam(selectedTeam.value.id_team, {
@@ -405,10 +391,18 @@ const assignAthletesToTeam = async () => {
       return;
     }
 
-    console.log("Assigning:", selectedAthletes.value, "to team:", selectedTeam.value.id_team);
+    console.log(
+      "Assigning:",
+      selectedAthletes.value,
+      "to team:",
+      selectedTeam.value.id_team
+    );
 
     for (const athleteId of selectedAthletes.value) {
-      await teamServices.assignToTeam(Number(athleteId), Number(selectedTeam.value.id_team));
+      await teamServices.assignToTeam(
+        Number(athleteId),
+        Number(selectedTeam.value.id_team)
+      );
     }
 
     // preserve open panels
@@ -418,14 +412,10 @@ const assignAthletesToTeam = async () => {
 
     openPanels.value = prevOpen;
     assignDialog.value = false;
-
   } catch (err) {
     console.error("Error assigning athletes:", err);
   }
 };
-
-
-
 
 const saveAssignedAthletes = async () => {
   const team = currentTeam.value;
@@ -444,7 +434,9 @@ const saveAssignedAthletes = async () => {
 
   try {
     await Promise.all([
-      ...toAdd.map((id_user) => teamServices.assignToTeam(id_user, team.id_team)),
+      ...toAdd.map((id_user) =>
+        teamServices.assignToTeam(id_user, team.id_team)
+      ),
       ...toRemove.map((id_user) =>
         teamServices.removeFromTeam(id_user, team.id_team)
       ),
@@ -464,14 +456,10 @@ const saveAssignedAthletes = async () => {
 
     // If you want the dialog to CLOSE after saving, uncomment this:
     // assignDialog.value = false;
-
   } catch (err) {
     console.error("Error saving assigned athletes:", err);
   }
 };
-
-
-
 
 // ---- DELETE ----
 const deleteTeam = async (id_team) => {

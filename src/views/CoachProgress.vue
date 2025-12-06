@@ -1,6 +1,8 @@
 <template>
     <v-app>
       <CoachNav />
+
+      <h1 class="text-h5 font-weight-bold mb-6"></h1>
   
       <v-container class="pa-8 mt-10">
         <h2 class="mb-6">Athlete Goal Progress</h2>

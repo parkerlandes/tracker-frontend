@@ -89,12 +89,13 @@ export default {
 .coach-nav-bar {
   backdrop-filter: blur(18px);
   background: linear-gradient(
-    135deg,
-    rgb(128, 0, 0),
-    rgb(176, 176, 176),
-    rgb(128, 0, 0)
+    130deg,
+    rgb(167, 167, 167),
+    rgb(255, 255, 255),
+    rgb(167, 167, 167)
   ) !important;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  
+  
 }
 
 /* Brand */
@@ -108,14 +109,17 @@ export default {
 }
 
 .brand-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  /* background: rgba(255, 255, 255, 0.15); */
+  background: #00000029;
 }
 
 .brand-text {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 0.4px;
+  font-family: var(--v-font-family);
+  font-size: 1rem;               /* same as default v-btn text */
+  font-weight: 500;                  /* v-btn default weight */
+  letter-spacing: 0.0892857143em;    /* v-btn default tracking */
+  text-transform: uppercase;         /* if you want it to match button text */
+  color: rgb(0, 0, 0);
 }
 
 .icon-avatar {
@@ -131,27 +135,28 @@ export default {
 }
 
 .nav-pill {
-  color: white !important;
+  color: rgb(0, 0, 0) !important;
   font-weight: 500;
   border-radius: 24px;
   padding: 6px 18px;
   transition: background 0.25s ease, transform 0.2s ease;
   backdrop-filter: blur(6px);
 }
-
 .nav-pill:hover {
-  background: rgba(255, 255, 255, 0.20);
+  /* background: rgba(255, 42, 42, 0.2); */
+  background: #00000029;
   transform: translateY(-2px);
 }
 
 /* Logout Button */
 .logout-btn {
-  color: white !important;
+  color: rgb(0, 0, 0) !important;
   transition: transform 0.25s ease, color 0.25s ease;
 }
 
 .logout-btn:hover {
   transform: scale(1.25);
-  color: #ffdddd !important;
+  /* color: #ffdddd !important; */
+  color: #00000029;
 }
 </style>

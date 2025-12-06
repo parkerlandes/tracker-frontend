@@ -9,7 +9,7 @@ import AthleteDashboard from "./views/AthleteDashboard.vue";
 
 // ATHLETES
 import ViewAthletes from "./views/ViewAthletes.vue";
-import AddAthlete from "./views/AddAthlete.vue";
+
 import AthleteProfile from "./views/AthleteProfile.vue";
 
 // EXERCISES
@@ -55,7 +55,6 @@ const router = createRouter({
 
     // COACH — ATHLETE MGMT
     { path: "/coach/athletes", component: ViewAthletes },
-    { path: "/coach/athlete/add", component: AddAthlete },
     { path: "/coach/athlete/:id", component: AthleteProfile, props: true },
     { 
       path: "/coach/teams",
